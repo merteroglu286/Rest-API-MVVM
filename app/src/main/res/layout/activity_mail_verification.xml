@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.MailVerification"
+    android:background="@color/main_black"
+    >
+
+    
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_mail_verification"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/main_black"
+        >
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:text="@string/mail_dogrulama"
+            android:textColor="@color/white"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="180dp"
+        android:layout_height="120dp"
+        android:src="@drawable/sending_emails"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/toolbar_mail_verification"/>
+
+    <TextView
+        android:id="@+id/txt_mailini_kontrol_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mailini_kontrol_et"
+        android:layout_below="@id/iv"
+        android:textColor="@color/main_red"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="12dp"/>
+
+    <TextView
+        android:id="@+id/txt_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mail_adresine_gonderdigimiz_4_haneli_kodu_girmelisin"
+        android:layout_below="@id/txt_mailini_kontrol_et"
+        android:textColor="@color/main_gray"
+        android:textSize="16sp"
+        android:layout_centerHorizontal="true"/>
+
+    <com.chaos.view.PinView
+        android:id="@+id/pinview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:cursorVisible="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:inputType="number"
+        android:padding="5dp"
+        android:textColor="@color/main_red"
+        app:lineColor="@color/main_gray"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:itemBackground="@color/main_gray"
+        app:cursorColor="@color/main_red"
+        app:cursorWidth="2dp"
+        app:hideLineWhenFilled="false"
+        app:itemCount="4"
+        app:itemHeight="64dp"
+        app:itemRadius="12dp"
+        app:itemSpacing="10dp"
+        app:itemWidth="48dp"
+        app:viewType="rectangle"
+        android:layout_below="@id/txt_comment"
+        />
+
+    <TextView
+        android:id="@+id/txt_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:59"
+        android:textSize="18sp"
+        android:layout_marginVertical="12dp"
+        android:layout_below="@id/pinview"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/main_gray" />
+
+    <Button
+        android:id="@+id/btn_send"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="@string/gonder"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_below="@id/txt_time"
+        android:theme="@style/ThemeOverlay.Material3.Button.ElevatedButton"
+        />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/btn_send"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kodu_almadin_mi"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"/>
+        <TextView
+            android:id="@+id/txt_send_code_again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yeniden_gonder"
+            android:textColor="@color/main_red"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"/>
+    </LinearLayout>
+
+</RelativeLayout>

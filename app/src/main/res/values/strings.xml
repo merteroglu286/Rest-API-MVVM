@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Elephantapps_Sprint1</string>
+    <string name="title_activity_onboarding">Onboarding</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="title_activity_login">Login</string>
+    <string name="mail_dogrulama">Mail Doğrulama</string>
+    <string name="mailini_kontrol_et">Mailini Kontrol Et</string>
+    <string name="mail_adresine_gonderdigimiz_4_haneli_kodu_girmelisin">Mail adresine gönderdiğimiz 4 haneli kodu girmelisin</string>
+    <string name="gonder">Gönder</string>
+    <string name="kodu_almadin_mi">Kodu almadın mı?</string>
+    <string name="yeniden_gonder">Yeniden gönder</string>
+    <string name="parolami_unuttum">Parolamı Unuttum</string>
+    <string name="parola_sifirlama">Parola Sıfırlama</string>
+    <string name="tekrar_yeni_parola">Tekrar Yeni Parola</string>
+    <string name="yeni_parola">Yeni Parola</string>
+    <string name="vazgec">Vazgeç</string>
+    <string name="mailini_gir">Mailini Gir</string>
+    <string name="txt_comment">Sana parola yenileme linki göndermemiz için mail adresini girmelisin.</string>
+    <string name="kayit_ol">Kayıt Ol</string>
+    <string name="giris_yap">Giriş Yap</string>
+    <string name="google_ile_devam_et">Google ile Devam Et</string>
+    <string name="apple_ile_devam_et">Apple ile Devam Et</string>
+    <string name="txt_contract">Devam ederek Üyelik Sözleşmesi\'ni, Rıza Metni\'ni, Çerez Politikası\'nı onayladığınızı kabul etmiş olursunuz.</string>
+    <string name="parolani_mi_unuttun">Parolanı mı unuttun?</string>
+    <string name="parola">Parola</string>
+    <string name="kayit_ol_or_giris_yap">Kayıt Ol / Giriş Yap</string>
+    <string name="kullanmaya_basla">Kullanmaya Başla</string>
+    <string name="txt_splash">Selam 👋\n Tomofilya’ya Hoş Geldin!</string>
+    <string name="txt_tomopuan">Kaydın tamamlandı. Sana bir süprizimiz var. Hesabına ₺ 10 değerinde 10 Tomopuan tanımladık. Bu tomopuanlar ile ürünlerini roketleyip satışı hızlandırabilirsin.</string>
+</resources>
