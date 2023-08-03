@@ -52,6 +52,5 @@ interface ApiService {
     @POST(Constans.EXT_AUTHENTICATION_SOCIAL)
     fun loginwithGoogle(
         @Body socialAuthenticationModel: SocialAuthenticationModel,
-        @Header("ApiKey") apiKey: String,
-        @Header("Authorization") authorization: String): Call<UserTokenResponseModel>
+        @Header("ApiKey") apiKey: String): Call<UserTokenResponseModel>
 }

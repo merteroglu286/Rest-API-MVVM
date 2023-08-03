@@ -25,11 +25,13 @@
     <string name="giris_yap">Giriş Yap</string>
     <string name="google_ile_devam_et">Google ile Devam Et</string>
     <string name="apple_ile_devam_et">Apple ile Devam Et</string>
-    <string name="txt_contract">Devam ederek Üyelik Sözleşmesi\'ni, Rıza Metni\'ni, Çerez Politikası\'nı onayladığınızı kabul etmiş olursunuz.</string>
+    <string name="txt_contract"><string name="membership_agreement">Uygulamaya üye olarak; <font color="#FF0000">Üyelik Sözleşmesi</font>’ni ve <font color="#FF0000">Kişisel Veriler ile İlgili Aydınlatma Metni</font>’ni okuduğunuzu ve kabul ettiğinizi onaylamaktasınız.</string>
+</string>
     <string name="parolani_mi_unuttun">Parolanı mı unuttun?</string>
     <string name="parola">Parola</string>
     <string name="kayit_ol_or_giris_yap">Kayıt Ol / Giriş Yap</string>
     <string name="kullanmaya_basla">Kullanmaya Başla</string>
     <string name="txt_splash">Selam 👋\n Tomofilya’ya Hoş Geldin!</string>
     <string name="txt_tomopuan">Kaydın tamamlandı. Sana bir süprizimiz var. Hesabına ₺ 10 değerinde 10 Tomopuan tanımladık. Bu tomopuanlar ile ürünlerini roketleyip satışı hızlandırabilirsin.</string>
+    <string name="default_web_client_id">109647082699-mgub018f286ots2fhlem76g3fiobcunh.apps.googleusercontent.com</string>
 </resources>

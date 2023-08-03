@@ -1,5 +1,6 @@
 package tr.main.elephantapps_sprint1.activities
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -10,12 +11,14 @@ import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.databinding.ActivityMailVerificationBinding
 import tr.main.elephantapps_sprint1.model.request.VerifyCodeModel
 import tr.main.elephantapps_sprint1.util.EmailSender
+import tr.main.elephantapps_sprint1.util.Utils
 import tr.main.elephantapps_sprint1.viewmodel.VerifyCodeViewModel
 
 class MailVerification : AppCompatActivity() {
 
     private lateinit var binding: ActivityMailVerificationBinding
     private lateinit var email: String
+    private lateinit var customProgressDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +26,10 @@ class MailVerification : AppCompatActivity() {
         binding = ActivityMailVerificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        customProgressDialog = Dialog(this)
+        customProgressDialog.setContentView(R.layout.dialog_custom_progress)
+        customProgressDialog.setCanceledOnTouchOutside(false);
+        customProgressDialog.setCancelable(false)
 
         setSupportActionBar(binding.toolbarMailVerification)
 
@@ -46,14 +53,10 @@ class MailVerification : AppCompatActivity() {
             callApiForVerifyCode()
         }
 
-        binding.txtSendCodeAgain.setOnClickListener{
-            sendCodeAgain()
-        }
-
     }
 
     private fun callApiForVerifyCode(){
-
+        customProgressDialog.show()
         val viewModel = ViewModelProvider(this).get(VerifyCodeViewModel::class.java)
 
         val verifyCodeModel = VerifyCodeModel(
@@ -64,10 +67,9 @@ class MailVerification : AppCompatActivity() {
 
         viewModel.getStatusCodeForVerify(verifyCodeModel)
 
-        viewModel.statusCodeVerifyLiveData.observe(this, Observer { statusCode ->
-            if (statusCode == 200) {
-                println(statusCode)
-
+        viewModel.successVerifyLiveData.observe(this, Observer { success ->
+            customProgressDialog.dismiss()
+            if (success == true) {
                 when (intent.getSerializableExtra("email_sender")) {
                     EmailSender.LoginSigninActivity -> {
                         val intent = Intent(this@MailVerification,Welcome::class.java)
@@ -80,14 +82,15 @@ class MailVerification : AppCompatActivity() {
                         startActivity(intent)
                     }
                 }
-
-            } else {
-                Toast.makeText(this@MailVerification,"İstek, durum koduyla başarısız:" + statusCode,Toast.LENGTH_LONG).show()
             }
         })
-    }
 
-    private fun sendCodeAgain(){
+        viewModel.errorVerifyLiveData.observe(this,Observer{message->
+            customProgressDialog.dismiss()
+            if (message != ""){
+                Toast.makeText(this@MailVerification,message,Toast.LENGTH_LONG).show()
+            }
 
+        })
     }
 }

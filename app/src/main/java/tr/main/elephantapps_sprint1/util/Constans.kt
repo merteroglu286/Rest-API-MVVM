@@ -14,6 +14,6 @@ class Constans {
         const val ACCEPT = "application/json"
         const val CONTENT_TYPE = "application/json"
 
-        const val TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im1lcnRlcm9nbHU4OTNAZ21haWwuY29tIiwibmFtZWlkIjoiMTM2MSIsImVtYWlsIjoibWVydGVyb2dsdTg5M0BnbWFpbC5jb20iLCJuYmYiOjE2OTA5MjcyMzksImV4cCI6MTY5MTUzMjAzOSwiaWF0IjoxNjkwOTI3MjM5fQ.orRknkKNhcutN7R2tsDfiGQZe-cWFepcThwOamwkomw"
+        const val  RC_SIGN_IN = 9001
     }
 }

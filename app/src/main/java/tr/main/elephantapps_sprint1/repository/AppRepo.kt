@@ -28,10 +28,18 @@ class AppRepo {
 
             apiService.createUser(userModel).enqueue(object : Callback<ResponseModel> {
                 override fun onResponse(call: Call<ResponseModel>, response: Response<ResponseModel>) {
-                    if (response.isSuccessful){
+                    if(response.isSuccessful){
                         val statusCode = response.code()
-                        val success = response.body()!!.success
-                        callback(success,response.body()!!.message.toString())
+                        if (statusCode == 200){
+                            val success = response.body()!!.success
+                            if (success){
+                                callback(true,"")
+                            }else{
+                                callback(false,response.body()!!.message.toString())
+                            }
+                        }else{
+                            callback(false, "Status code error: $statusCode")
+                        }
                     }
 
                 }
@@ -50,12 +58,18 @@ class AppRepo {
                 override fun onResponse(call: Call<LoginResponseModel>, response: Response<LoginResponseModel>) {
                     if(response.isSuccessful){
                         val statusCode = response.code()
-                        val success = response.body()!!.success
-                        callback(success,response.body()!!.message.toString())
+                        if (statusCode == 200){
+                            val success = response.body()!!.success
+                            if (success){
+                                callback(true,"")
+                            }else{
+                                callback(false,response.body()!!.message)
+                            }
+                        }else{
+                            callback(false, "Status code error: $statusCode")
+                        }
                     }
-
                 }
-
                 override fun onFailure(call: Call<LoginResponseModel>, t: Throwable) {
                     callback(false,t.message.toString())
                 }
@@ -64,18 +78,27 @@ class AppRepo {
 
         fun callApiForVerifyCode(
             verifyCodeModel: VerifyCodeModel,
-            callback: (Int) -> Unit
+            callback:(success: Boolean, message: String) -> Unit
         ) {
             apiService.verifyCode(verifyCodeModel,Constans.API_KEY).enqueue(object : Callback<ResponseModel> {
                 override fun onResponse(call: Call<ResponseModel>, response: Response<ResponseModel>) {
-                    if(response.body()?.success == true){
+                    if(response.isSuccessful){
                         val statusCode = response.code()
-                        callback(statusCode)
+                        if (statusCode == 200){
+                            val success = response.body()!!.success
+                            if (success){
+                                callback(true,"")
+                            }else{
+                                callback(false,response.body()!!.message.toString())
+                            }
+                        }else{
+                            callback(false, "Status code error: $statusCode")
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
-                    // Handle the error.
+                    callback(false,t.message.toString())
                 }
             })
         }
@@ -87,12 +110,18 @@ class AppRepo {
 
             apiService.getVerificationCode(email,Constans.API_KEY).enqueue(object : Callback<ResponseModel> {
                 override fun onResponse(call: Call<ResponseModel>,response: Response<ResponseModel>) {
-                    if (response.isSuccessful){
+                    if(response.isSuccessful){
                         val statusCode = response.code()
-                        val success = response.body()!!.success
-                        callback(success,response.body()!!.message.toString())
-                    }else{
-                        callback(false,response.body()!!.message.toString())
+                        if (statusCode == 200){
+                            val success = response.body()!!.success
+                            if (success){
+                                callback(true,"")
+                            }else{
+                                callback(false,response.body()!!.message.toString())
+                            }
+                        }else{
+                            callback(false, "Status code error: $statusCode")
+                        }
                     }
                 }
 
@@ -109,10 +138,18 @@ class AppRepo {
 
             apiService.passwordReset(passwordResetModel,Constans.API_KEY).enqueue(object : Callback<ResponseModel> {
                 override fun onResponse(call: Call<ResponseModel>,response: Response<ResponseModel>) {
-                    if (response.isSuccessful){
+                    if(response.isSuccessful){
                         val statusCode = response.code()
-                        val success = response.body()!!.success
-                        callback(success,response.body()!!.message.toString())
+                        if (statusCode == 200){
+                            val success = response.body()!!.success
+                            if (success){
+                                callback(true,"")
+                            }else{
+                                callback(false,response.body()!!.message.toString())
+                            }
+                        }else{
+                            callback(false, "Status code error: $statusCode")
+                        }
                     }
                 }
 
@@ -127,12 +164,20 @@ class AppRepo {
             callback:(success: Boolean, message: String) -> Unit
         ) {
 
-            apiService.loginwithGoogle(socialAuthenticationModel,Constans.API_KEY,"Bearer"+" "+Constans.TOKEN).enqueue(object : Callback<UserTokenResponseModel> {
+            apiService.loginwithGoogle(socialAuthenticationModel,Constans.API_KEY).enqueue(object : Callback<UserTokenResponseModel> {
                 override fun onResponse(call: Call<UserTokenResponseModel>, response: Response<UserTokenResponseModel>) {
-                    if (response.isSuccessful){
+                    if(response.isSuccessful){
                         val statusCode = response.code()
-                        val success = response.body()!!.success
-                        callback(success,response.body()!!.message.toString())
+                        if (statusCode == 200){
+                            val success = response.body()!!.success
+                            if (success){
+                                callback(true,"")
+                            }else{
+                                callback(false,response.body()!!.message.toString())
+                            }
+                        }else{
+                            callback(false, "Status code error: $statusCode")
+                        }
                     }
                 }
 

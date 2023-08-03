@@ -1,5 +1,6 @@
 package tr.main.elephantapps_sprint1.activities
 
+import android.app.Dialog
 import android.content.Intent
 import android.hardware.display.VirtualDisplay
 import androidx.appcompat.app.AppCompatActivity
@@ -31,11 +32,17 @@ import tr.main.elephantapps_sprint1.viewmodel.VerifyCodeViewModel
 class ForgotPassword : AppCompatActivity() {
 
     private lateinit var binding : ActivityForgotPasswordBinding
+    private lateinit var customProgressDialog: Dialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        customProgressDialog = Dialog(this)
+        customProgressDialog.setContentView(R.layout.dialog_custom_progress)
+        customProgressDialog.setCanceledOnTouchOutside(false);
+        customProgressDialog.setCancelable(false)
 
         setSupportActionBar(binding.toolbarMailVerification)
 
@@ -59,13 +66,13 @@ class ForgotPassword : AppCompatActivity() {
     }
 
     private fun sendCode(){
-
+        customProgressDialog.show()
         val viewModel = ViewModelProvider(this).get(ForgotPasswordViewModel::class.java)
 
         viewModel.callApiForVerificationCode(binding.etEmail.text.toString())
 
         viewModel.successLiveData.observe(this, Observer { success ->
-            println(success)
+            customProgressDialog.dismiss()
             if (success == true) {
                 val intent = Intent(this@ForgotPassword,MailVerification::class.java)
                 intent.putExtra("email_sender", EmailSender.ForgotPasswordActivity)
@@ -76,6 +83,7 @@ class ForgotPassword : AppCompatActivity() {
         })
 
         viewModel.errorLiveData.observe(this,Observer{message->
+            customProgressDialog.dismiss()
             if (message != ""){
                 Toast.makeText(this@ForgotPassword,message,Toast.LENGTH_LONG).show()
             }

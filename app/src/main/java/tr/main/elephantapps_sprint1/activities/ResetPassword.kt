@@ -1,5 +1,6 @@
 package tr.main.elephantapps_sprint1.activities
 
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.databinding.ActivityResetPasswordBinding
 import tr.main.elephantapps_sprint1.model.request.PasswordResetModel
+import tr.main.elephantapps_sprint1.util.Utils
 import tr.main.elephantapps_sprint1.viewmodel.ForgotPasswordViewModel
 import tr.main.elephantapps_sprint1.viewmodel.PasswordResetViewModel
 
@@ -16,12 +18,18 @@ class ResetPassword : AppCompatActivity() {
     private lateinit var binding : ActivityResetPasswordBinding
     private lateinit var email: String
     private lateinit var code: String
+    private lateinit var customProgressDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityResetPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        customProgressDialog = Dialog(this)
+        customProgressDialog.setContentView(R.layout.dialog_custom_progress)
+        customProgressDialog.setCanceledOnTouchOutside(false);
+        customProgressDialog.setCancelable(false)
 
         setSupportActionBar(binding.toolbarResetPassword)
 
@@ -55,7 +63,7 @@ class ResetPassword : AppCompatActivity() {
     }
 
     private fun changePassword(){
-
+        customProgressDialog.show()
         val viewModel = ViewModelProvider(this).get(PasswordResetViewModel::class.java)
 
 
@@ -68,7 +76,7 @@ class ResetPassword : AppCompatActivity() {
         viewModel.callApiForPasswordReset(passwordResetMode)
 
         viewModel.successLiveData.observe(this, Observer { success ->
-            println(success)
+            customProgressDialog.dismiss()
             if (success == true) {
                 val intent = Intent(this@ResetPassword,LoginAndSignin::class.java)
                 intent.putExtra("finished",1)
@@ -78,6 +86,7 @@ class ResetPassword : AppCompatActivity() {
         })
 
         viewModel.errorLiveData.observe(this,Observer{message->
+            customProgressDialog.dismiss()
             if (message != ""){
                 Toast.makeText(this@ResetPassword,message,Toast.LENGTH_LONG).show()
             }

@@ -7,12 +7,14 @@ import tr.main.elephantapps_sprint1.model.request.VerifyCodeModel
 
 class VerifyCodeViewModel: ViewModel() {
 
-    var statusCodeVerifyLiveData = MutableLiveData<Int>()
+    var successVerifyLiveData = MutableLiveData<Boolean>()
+    var errorVerifyLiveData = MutableLiveData<String>()
 
 
     fun getStatusCodeForVerify(verifyCodeModel: VerifyCodeModel) {
-        AppRepo.callApiForVerifyCode(verifyCodeModel) { statusCode ->
-            statusCodeVerifyLiveData.value = statusCode
+        AppRepo.callApiForVerifyCode(verifyCodeModel) { success,message ->
+            successVerifyLiveData.value = success
+            errorVerifyLiveData.value = message
         }
     }
 }

@@ -2,6 +2,8 @@ package tr.main.elephantapps_sprint1.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
 import tr.main.elephantapps_sprint1.repository.AppRepo
 import tr.main.elephantapps_sprint1.model.request.UserLoginModel

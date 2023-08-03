@@ -1,7 +1,10 @@
 package tr.main.elephantapps_sprint1.activities
 
+import android.app.Dialog
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.RadioGroup
@@ -11,14 +14,21 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.marginTop
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.databinding.ActivityLoginAndSigninBinding
 import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
 import tr.main.elephantapps_sprint1.model.request.UserLoginModel
 import tr.main.elephantapps_sprint1.model.request.UserModel
 import tr.main.elephantapps_sprint1.util.Constans
+import tr.main.elephantapps_sprint1.util.Constans.Companion.RC_SIGN_IN
 import tr.main.elephantapps_sprint1.util.EmailSender
 import tr.main.elephantapps_sprint1.util.SocialAuthenticationPlatform
+import tr.main.elephantapps_sprint1.util.Utils
 import tr.main.elephantapps_sprint1.viewmodel.SigninAndLoginViewModel
 
 
@@ -26,6 +36,8 @@ class LoginAndSignin : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityLoginAndSigninBinding
+    private lateinit var tokenId: String
+    private lateinit var customProgressDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -34,9 +46,22 @@ class LoginAndSignin : AppCompatActivity() {
         binding = ActivityLoginAndSigninBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        customProgressDialog = Dialog(this)
+        customProgressDialog.setContentView(R.layout.dialog_custom_progress)
+        customProgressDialog.setCanceledOnTouchOutside(false);
+        customProgressDialog.setCancelable(false)
+
         val fullname = binding.etUsername.text.toString()
         val email = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
 
         if (intent.getIntExtra("finished",0) == 1){
             binding.rgToggle.check(R.id.login)
@@ -93,13 +118,14 @@ class LoginAndSignin : AppCompatActivity() {
         }
 
         binding.llBtnGoogle.setOnClickListener {
-            loginWithGoogle()
+            val signInIntent: Intent = mGoogleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
         }
 
     }
 
     private fun signIn(){
-
+        customProgressDialog.show()
         val viewModel = ViewModelProvider(this).get(SigninAndLoginViewModel::class.java)
 
         val userModel = UserModel(
@@ -113,6 +139,7 @@ class LoginAndSignin : AppCompatActivity() {
         viewModel.getStatusCodeForSignin(userModel)
 
         viewModel.successSigninLiveData.observe(this, Observer { success ->
+            customProgressDialog.dismiss()
             if (success == true) {
                 val intent = Intent(this@LoginAndSignin,MailVerification::class.java)
                 intent.putExtra("email_sender",EmailSender.LoginSigninActivity)
@@ -122,6 +149,7 @@ class LoginAndSignin : AppCompatActivity() {
         })
 
         viewModel.errorSigninLiveData.observe(this,Observer{message->
+            customProgressDialog.dismiss()
             if (message != ""){
                 Toast.makeText(this@LoginAndSignin,message,Toast.LENGTH_LONG).show()
             }
@@ -131,6 +159,7 @@ class LoginAndSignin : AppCompatActivity() {
     }
 
     private fun login(){
+        customProgressDialog.show()
         val viewModel = ViewModelProvider(this).get(SigninAndLoginViewModel::class.java)
 
         val userLoginModel = UserLoginModel(
@@ -141,6 +170,7 @@ class LoginAndSignin : AppCompatActivity() {
         viewModel.getStatusCodeForLogin(userLoginModel)
 
         viewModel.successLoginLiveData.observe(this, Observer { success ->
+            customProgressDialog.dismiss()
             if (success == true) {
                 val intent = Intent(this@LoginAndSignin,AnaSayfa::class.java)
                 startActivity(intent)
@@ -149,6 +179,7 @@ class LoginAndSignin : AppCompatActivity() {
         })
 
         viewModel.errorLoginLiveData.observe(this,Observer{message->
+            customProgressDialog.dismiss()
             if (message != ""){
                 Toast.makeText(this@LoginAndSignin,message,Toast.LENGTH_LONG).show()
             }
@@ -156,17 +187,20 @@ class LoginAndSignin : AppCompatActivity() {
         })
     }
 
-    private fun loginWithGoogle(){
+    private fun loginWithGoogle(tokenId:String){
+        customProgressDialog.show()
+
         val viewModel = ViewModelProvider(this).get(SigninAndLoginViewModel::class.java)
 
         val socialAuthenticationModel = SocialAuthenticationModel(
-            Constans.TOKEN,
+            tokenId,
             SocialAuthenticationPlatform.Google
         )
 
         viewModel.callApiForLoginWithGoogle(socialAuthenticationModel)
 
         viewModel.successLoginWithGoogleLiveData.observe(this, Observer { success ->
+            customProgressDialog.dismiss()
             if (success == true) {
                 val intent = Intent(this@LoginAndSignin,AnaSayfa::class.java)
                 startActivity(intent)
@@ -175,10 +209,34 @@ class LoginAndSignin : AppCompatActivity() {
         })
 
         viewModel.errorLoginWithGoogleLiveData.observe(this,Observer{message->
+            customProgressDialog.dismiss()
             if (message != ""){
                 Toast.makeText(this@LoginAndSignin,message,Toast.LENGTH_LONG).show()
             }
 
         })
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
+        }
+    }
+
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+
+            if (account.idToken != null){
+                loginWithGoogle(account.idToken.toString())
+            }
+
+        } catch (e: ApiException) {
+            Log.w(ContentValues.TAG, "signInResult:failed code=" + e.statusCode)
+        }
     }
 }
