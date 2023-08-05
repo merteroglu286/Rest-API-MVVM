@@ -14,7 +14,7 @@ import tr.main.elephantapps_sprint1.util.Utils
 import tr.main.elephantapps_sprint1.viewmodel.ForgotPasswordViewModel
 import tr.main.elephantapps_sprint1.viewmodel.PasswordResetViewModel
 
-class ResetPassword : AppCompatActivity() {
+class ResetPassword : BaseActivity() {
     private lateinit var binding : ActivityResetPasswordBinding
     private lateinit var email: String
     private lateinit var code: String

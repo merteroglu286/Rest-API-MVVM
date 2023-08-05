@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MailVerification"
-    android:background="@color/main_black"
+    android:background="@color/background"
     >
 
     
@@ -14,7 +14,7 @@
         android:id="@+id/toolbar_mail_verification"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/main_black"
+        android:background="@color/background"
         >
         <TextView
             android:id="@+id/toolbar_title"
@@ -41,8 +41,8 @@
         android:layout_height="wrap_content"
         android:text="@string/mailini_kontrol_et"
         android:layout_below="@id/iv"
-        android:textColor="@color/main_red"
-        android:textSize="18sp"
+        android:textColor="@color/primary"
+        android:textSize="16sp"
         android:layout_centerHorizontal="true"
         android:layout_marginVertical="12dp"/>
 
@@ -52,8 +52,8 @@
         android:layout_height="wrap_content"
         android:text="@string/mail_adresine_gonderdigimiz_4_haneli_kodu_girmelisin"
         android:layout_below="@id/txt_mailini_kontrol_et"
-        android:textColor="@color/main_gray"
-        android:textSize="16sp"
+        android:textColor="@color/light_grey"
+        android:textSize="14sp"
         android:layout_centerHorizontal="true"/>
 
     <com.chaos.view.PinView
@@ -68,12 +68,12 @@
         android:gravity="center"
         android:inputType="number"
         android:padding="5dp"
-        android:textColor="@color/main_red"
-        app:lineColor="@color/main_gray"
+        android:textColor="@color/primary"
+        app:lineColor="@color/light_grey"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:itemBackground="@color/main_gray"
-        app:cursorColor="@color/main_red"
+        android:itemBackground="@color/light_grey"
+        app:cursorColor="@color/primary"
         app:cursorWidth="2dp"
         app:hideLineWhenFilled="false"
         app:itemCount="4"
@@ -94,7 +94,7 @@
         android:layout_marginVertical="12dp"
         android:layout_below="@id/pinview"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/main_gray" />
+        android:textColor="@color/light_grey" />
 
     <Button
         android:id="@+id/btn_send"
@@ -130,7 +130,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/yeniden_gonder"
-            android:textColor="@color/main_red"
+            android:textColor="@color/primary"
             android:textSize="16sp"
             android:layout_marginTop="12dp"/>
     </LinearLayout>

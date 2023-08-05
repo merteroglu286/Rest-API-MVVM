@@ -34,4 +34,6 @@
     <string name="txt_splash">Selam 👋\n Tomofilya’ya Hoş Geldin!</string>
     <string name="txt_tomopuan">Kaydın tamamlandı. Sana bir süprizimiz var. Hesabına ₺ 10 değerinde 10 Tomopuan tanımladık. Bu tomopuanlar ile ürünlerini roketleyip satışı hızlandırabilirsin.</string>
     <string name="default_web_client_id">109647082699-mgub018f286ots2fhlem76g3fiobcunh.apps.googleusercontent.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

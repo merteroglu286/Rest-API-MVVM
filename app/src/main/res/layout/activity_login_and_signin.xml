@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".activities.LoginAndSignin"
-    android:background="@color/main_black">
+    android:background="@color/background">
 
     <ImageView
         android:id="@+id/iv_logo"
@@ -110,20 +110,23 @@
         android:layout_marginHorizontal="24dp"
         app:passwordToggleTint="@color/white"
         app:hintEnabled="false">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/parola"
             android:textSize="16sp"
-            android:textCursorDrawable="@color/white"
+            android:textCursorDrawable="@drawable/cursor_drawable"
             android:textColor="@color/white"
             android:background="@drawable/white_outlined_button_bg"
             android:paddingVertical="14dp"
             android:paddingHorizontal="18dp"
             android:textColorHint="@color/white"
-            />
+            android:inputType="textPassword" /> <!-- inputType özelliğini textPassword olarak ayarla -->
+
     </com.google.android.material.textfield.TextInputLayout>
+
 
 
     <TextView
@@ -148,7 +151,7 @@
         android:layout_height="wrap_content"
         android:padding="4dp"
         android:text="@string/txt_contract"
-        android:textColor="@color/main_gray"
+        android:textColor="@color/light_grey"
         android:textSize="12sp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -209,7 +212,7 @@
             android:layout_height="1dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@color/main_gray" />
+            android:background="@color/light_grey" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -217,7 +220,7 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="12dp"
             android:text="ya da"
-            android:textColor="@color/main_gray"
+            android:textColor="@color/light_grey"
             android:textSize="20sp" />
 
         <View
@@ -225,7 +228,7 @@
             android:layout_height="1dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@color/main_gray" />
+            android:background="@color/light_grey" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_btn_google"
@@ -259,36 +262,5 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_btn_apple"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/white_outlined_button_bg"
-        android:orientation="horizontal"
-        android:paddingVertical="14dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ll_btn_google">
-
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="12dp"
-            android:src="@drawable/apple_logo"
-            app:tint="@color/white" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="@string/apple_ile_devam_et"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

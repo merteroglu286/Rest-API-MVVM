@@ -7,7 +7,7 @@ import tr.main.elephantapps_sprint1.adapter.OnboardingViewPagerAdapter
 import tr.main.elephantapps_sprint1.databinding.ActivityOnboardingBinding
 
 
-class Onboarding : AppCompatActivity() {
+class Onboarding : BaseActivity() {
     private var binding : ActivityOnboardingBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

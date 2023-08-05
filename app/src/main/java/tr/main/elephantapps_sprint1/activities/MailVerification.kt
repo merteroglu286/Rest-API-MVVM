@@ -14,7 +14,7 @@ import tr.main.elephantapps_sprint1.util.EmailSender
 import tr.main.elephantapps_sprint1.util.Utils
 import tr.main.elephantapps_sprint1.viewmodel.VerifyCodeViewModel
 
-class MailVerification : AppCompatActivity() {
+class MailVerification : BaseActivity() {
 
     private lateinit var binding: ActivityMailVerificationBinding
     private lateinit var email: String

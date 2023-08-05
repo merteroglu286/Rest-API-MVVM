@@ -29,7 +29,7 @@ import tr.main.elephantapps_sprint1.viewmodel.ForgotPasswordViewModel
 import tr.main.elephantapps_sprint1.viewmodel.SigninAndLoginViewModel
 import tr.main.elephantapps_sprint1.viewmodel.VerifyCodeViewModel
 
-class ForgotPassword : AppCompatActivity() {
+class ForgotPassword : BaseActivity() {
 
     private lateinit var binding : ActivityForgotPasswordBinding
     private lateinit var customProgressDialog: Dialog

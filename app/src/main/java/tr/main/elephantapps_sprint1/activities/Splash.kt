@@ -14,7 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import tr.main.elephantapps_sprint1.R
 
-class Splash : AppCompatActivity() {
+class Splash : BaseActivity() {
 
     private lateinit var ivSplash : ImageView
     private lateinit var tvSplash: TextView

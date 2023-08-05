@@ -7,7 +7,7 @@ import android.os.Bundle
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.databinding.ActivityWelcomeBinding
 
-class Welcome : AppCompatActivity() {
+class Welcome : BaseActivity() {
     private lateinit var binding : ActivityWelcomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

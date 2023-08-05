@@ -32,7 +32,7 @@ import tr.main.elephantapps_sprint1.util.Utils
 import tr.main.elephantapps_sprint1.viewmodel.SigninAndLoginViewModel
 
 
-class LoginAndSignin : AppCompatActivity() {
+class LoginAndSignin : BaseActivity() {
 
 
     private lateinit var binding: ActivityLoginAndSigninBinding
