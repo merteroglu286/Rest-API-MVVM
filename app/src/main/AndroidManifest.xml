@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ResetPassword"
             android:exported="false" />
         <activity
@@ -41,7 +44,7 @@
             android:label="@string/title_activity_onboarding"
             android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.Dashboard"
             android:exported="false" />
         <activity
             android:name=".activities.Splash"

@@ -9,6 +9,7 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import tr.main.elephantapps_sprint1.model.request.HomeSearchRequestModel
 import tr.main.elephantapps_sprint1.model.request.PasswordResetModel
 import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
 import tr.main.elephantapps_sprint1.util.Constans
@@ -17,6 +18,8 @@ import tr.main.elephantapps_sprint1.model.response.ResponseModel
 import tr.main.elephantapps_sprint1.model.request.UserLoginModel
 import tr.main.elephantapps_sprint1.model.request.UserModel
 import tr.main.elephantapps_sprint1.model.request.VerifyCodeModel
+import tr.main.elephantapps_sprint1.model.response.Home.HomeAllResponseModel
+import tr.main.elephantapps_sprint1.model.response.Search.SearchResultResponseModel
 import tr.main.elephantapps_sprint1.model.response.UserTokenResponseModel
 
 interface ApiService {
@@ -53,4 +56,13 @@ interface ApiService {
     fun loginwithGoogle(
         @Body socialAuthenticationModel: SocialAuthenticationModel,
         @Header("ApiKey") apiKey: String): Call<UserTokenResponseModel>
+
+    @GET(Constans.EXT_HOME_GETALL)
+    fun getHomeAll(
+        @Header("ApiKey") apiKey: String): Call<HomeAllResponseModel>
+
+    @POST(Constans.EXT_HOME_SEARCH)
+    fun getHomeSearch(
+        @Body homeSearchRequestModel: HomeSearchRequestModel,
+        @Header("ApiKey") apiKey: String): Call<SearchResultResponseModel>
 }

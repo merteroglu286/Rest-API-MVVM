@@ -3,6 +3,7 @@ package tr.main.elephantapps_sprint1.repository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import tr.main.elephantapps_sprint1.model.request.HomeSearchRequestModel
 import tr.main.elephantapps_sprint1.model.request.PasswordResetModel
 import tr.main.elephantapps_sprint1.model.request.SendVerificationCodeModel
 import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
@@ -12,6 +13,8 @@ import tr.main.elephantapps_sprint1.model.response.ResponseModel
 import tr.main.elephantapps_sprint1.model.request.UserLoginModel
 import tr.main.elephantapps_sprint1.model.request.UserModel
 import tr.main.elephantapps_sprint1.model.request.VerifyCodeModel
+import tr.main.elephantapps_sprint1.model.response.Home.HomeAllResponseModel
+import tr.main.elephantapps_sprint1.model.response.Search.SearchResultResponseModel
 import tr.main.elephantapps_sprint1.model.response.UserTokenResponseModel
 import tr.main.elephantapps_sprint1.util.Utils
 
@@ -186,11 +189,64 @@ class AppRepo {
                 }
             })
         }
+
+
+        fun callApiForHome(
+            callback:(homeAllResponseModel: HomeAllResponseModel?,success: Boolean, message: String) -> Unit
+        ) {
+
+            apiService.getHomeAll(Constans.API_KEY).enqueue(object : Callback<HomeAllResponseModel> {
+                override fun onResponse(call: Call<HomeAllResponseModel>, response: Response<HomeAllResponseModel>) {
+                    if(response.isSuccessful){
+                        val statusCode = response.code()
+                        if (statusCode == 200){
+                            val success = response.body()!!.success
+                            if (success){
+                                callback(response.body()!!,true,"")
+                            }else{
+                                callback(null,false,response.body()!!.message.toString())
+                            }
+                        }else{
+                            callback(null,false, "Status code error: $statusCode")
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<HomeAllResponseModel>, t: Throwable) {
+                    callback(null,false,t.message.toString())
+                }
+            })
+        }
+
+
+        fun callApiHomeSearch(
+            homeSearchRequestModel: HomeSearchRequestModel,
+            callback:(searchResultResponseModel: SearchResultResponseModel?,success: Boolean, message: String) -> Unit
+        ) {
+
+            apiService.getHomeSearch(homeSearchRequestModel,Constans.API_KEY).enqueue(object : Callback<SearchResultResponseModel> {
+                override fun onResponse(call: Call<SearchResultResponseModel>, response: Response<SearchResultResponseModel>) {
+                    if(response.isSuccessful){
+                        val statusCode = response.code()
+                        if (statusCode == 200){
+                            val success = response.body()!!.success
+                            if (success){
+                                callback(response.body()!!,true,"")
+                            }else{
+                                callback(null,false,response.body()!!.message.toString())
+                            }
+                        }else{
+                            callback(null,false, "Status code error: $statusCode")
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<SearchResultResponseModel>, t: Throwable) {
+                    callback(null,false,t.message.toString())
+                }
+            })
+        }
+
     }
-
-
-
-
-
 
 }

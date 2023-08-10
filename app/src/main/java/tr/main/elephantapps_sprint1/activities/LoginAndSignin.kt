@@ -172,7 +172,7 @@ class LoginAndSignin : BaseActivity() {
         viewModel.successLoginLiveData.observe(this, Observer { success ->
             customProgressDialog.dismiss()
             if (success == true) {
-                val intent = Intent(this@LoginAndSignin,AnaSayfa::class.java)
+                val intent = Intent(this@LoginAndSignin,Dashboard::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -202,7 +202,7 @@ class LoginAndSignin : BaseActivity() {
         viewModel.successLoginWithGoogleLiveData.observe(this, Observer { success ->
             customProgressDialog.dismiss()
             if (success == true) {
-                val intent = Intent(this@LoginAndSignin,AnaSayfa::class.java)
+                val intent = Intent(this@LoginAndSignin,Dashboard::class.java)
                 startActivity(intent)
                 finish()
             }

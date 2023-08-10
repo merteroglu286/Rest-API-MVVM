@@ -12,7 +12,7 @@
     <string name="mailini_kontrol_et">Mailini Kontrol Et</string>
     <string name="mail_adresine_gonderdigimiz_4_haneli_kodu_girmelisin">Mail adresine gönderdiğimiz 4 haneli kodu girmelisin</string>
     <string name="gonder">Gönder</string>
-    <string name="kodu_almadin_mi">Kodu almadın mı?</string>
+    <string name="kodu_almadin_mi">Kodu almadın mı? </string>
     <string name="yeniden_gonder">Yeniden gönder</string>
     <string name="parolami_unuttum">Parolamı Unuttum</string>
     <string name="parola_sifirlama">Parola Sıfırlama</string>

@@ -16,9 +16,9 @@ class Onboarding : BaseActivity() {
         setContentView(binding?.root)
 
         val images = listOf(
-            tr.main.elephantapps_sprint1.R.drawable.logo,
-            tr.main.elephantapps_sprint1.R.drawable.logo,
-            tr.main.elephantapps_sprint1.R.drawable.logo
+            tr.main.elephantapps_sprint1.R.drawable.tesla,
+            tr.main.elephantapps_sprint1.R.drawable.tesla,
+            tr.main.elephantapps_sprint1.R.drawable.tesla
         )
 
         val viewpager = binding?.vpOnboarding

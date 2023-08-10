@@ -53,6 +53,7 @@
         android:text="@string/mail_adresine_gonderdigimiz_4_haneli_kodu_girmelisin"
         android:layout_below="@id/txt_mailini_kontrol_et"
         android:textColor="@color/light_grey"
+        android:textAlignment="center"
         android:textSize="14sp"
         android:layout_centerHorizontal="true"/>
 

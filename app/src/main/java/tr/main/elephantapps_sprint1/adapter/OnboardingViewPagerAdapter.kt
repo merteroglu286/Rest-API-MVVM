@@ -19,13 +19,19 @@ class OnboardingViewPagerAdapter(private val images: List<Int>) : PagerAdapter()
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        // Create a ImageView
+
         val imageView = ImageView(container.context)
 
-        // Set the image to the ImageView
         imageView.setImageResource(images[position])
 
-        // Add the ImageView to the ViewPager
+        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+
+        val layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        imageView.layoutParams = layoutParams
+
         container.addView(imageView)
 
         return imageView
