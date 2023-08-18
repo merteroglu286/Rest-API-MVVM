@@ -2,14 +2,11 @@ package tr.main.elephantapps_sprint1.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tr.main.elephantapps_sprint1.databinding.GarageItemLayoutForSearchResultBinding
 import tr.main.elephantapps_sprint1.model.response.Search.Garage
-import tr.main.elephantapps_sprint1.util.Constans
-import java.util.Locale
+import tr.main.elephantapps_sprint1.Constants.Constans
 
 class GarageResultAdapter(private val garages: ArrayList<Garage>
 ) :

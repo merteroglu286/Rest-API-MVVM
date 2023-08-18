@@ -1,4 +1,4 @@
-package tr.main.elephantapps_sprint1.util
+package tr.main.elephantapps_sprint1.enums
 
 enum class EmailSender {
     LoginSigninActivity,

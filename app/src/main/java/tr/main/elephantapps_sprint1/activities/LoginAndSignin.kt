@@ -2,16 +2,15 @@ package tr.main.elephantapps_sprint1.activities
 
 import android.app.Dialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import androidx.core.view.marginTop
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -19,16 +18,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.gson.Gson
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.databinding.ActivityLoginAndSigninBinding
 import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
 import tr.main.elephantapps_sprint1.model.request.UserLoginModel
 import tr.main.elephantapps_sprint1.model.request.UserModel
-import tr.main.elephantapps_sprint1.util.Constans
-import tr.main.elephantapps_sprint1.util.Constans.Companion.RC_SIGN_IN
-import tr.main.elephantapps_sprint1.util.EmailSender
-import tr.main.elephantapps_sprint1.util.SocialAuthenticationPlatform
-import tr.main.elephantapps_sprint1.util.Utils
+import tr.main.elephantapps_sprint1.Constants.Constans.Companion.RC_SIGN_IN
+import tr.main.elephantapps_sprint1.enums.EmailSender
+import tr.main.elephantapps_sprint1.enums.SocialAuthenticationPlatform
+import tr.main.elephantapps_sprint1.model.request.Data
+import tr.main.elephantapps_sprint1.model.response.LoginResponseModel
 import tr.main.elephantapps_sprint1.viewmodel.SigninAndLoginViewModel
 
 
@@ -36,8 +36,13 @@ class LoginAndSignin : BaseActivity() {
 
 
     private lateinit var binding: ActivityLoginAndSigninBinding
-    private lateinit var tokenId: String
+    private lateinit var accessToken: String
     private lateinit var customProgressDialog: Dialog
+    private var success : Boolean = false
+
+    private lateinit var sharedPreferences : SharedPreferences
+    private lateinit var userArrayList: ArrayList<Data>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -45,6 +50,8 @@ class LoginAndSignin : BaseActivity() {
 
         binding = ActivityLoginAndSigninBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        userArrayList = arrayListOf<Data>()
 
         customProgressDialog = Dialog(this)
         customProgressDialog.setContentView(R.layout.dialog_custom_progress)
@@ -142,7 +149,7 @@ class LoginAndSignin : BaseActivity() {
             customProgressDialog.dismiss()
             if (success == true) {
                 val intent = Intent(this@LoginAndSignin,MailVerification::class.java)
-                intent.putExtra("email_sender",EmailSender.LoginSigninActivity)
+                intent.putExtra("email_sender", EmailSender.LoginSigninActivity)
                 intent.putExtra("email",binding.etEmail.text.toString())
                 startActivity(intent)
             }
@@ -171,11 +178,27 @@ class LoginAndSignin : BaseActivity() {
 
         viewModel.successLoginLiveData.observe(this, Observer { success ->
             customProgressDialog.dismiss()
-            if (success == true) {
-                val intent = Intent(this@LoginAndSignin,Dashboard::class.java)
-                startActivity(intent)
-                finish()
+
+                if (success) {
+
+                    viewModel.loginResponseModelLiveData.observe(this, Observer {data->
+                        val user = data.data
+                        userArrayList.add(user)
+                        sharedPreferences = this.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        val gson = Gson()
+                        val json : String = gson.toJson(userArrayList)
+                        editor.putString("user",json)
+                        editor.putBoolean("isLogin",true)
+                        editor.apply()
+
+
+                        val intent = Intent(this@LoginAndSignin,Dashboard::class.java)
+                        startActivity(intent)
+                        finish()
+                })
             }
+
         })
 
         viewModel.errorLoginLiveData.observe(this,Observer{message->
@@ -185,6 +208,8 @@ class LoginAndSignin : BaseActivity() {
             }
 
         })
+
+
     }
 
     private fun loginWithGoogle(tokenId:String){

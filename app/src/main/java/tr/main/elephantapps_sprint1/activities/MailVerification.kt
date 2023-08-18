@@ -4,14 +4,12 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.databinding.ActivityMailVerificationBinding
 import tr.main.elephantapps_sprint1.model.request.VerifyCodeModel
-import tr.main.elephantapps_sprint1.util.EmailSender
-import tr.main.elephantapps_sprint1.util.Utils
+import tr.main.elephantapps_sprint1.enums.EmailSender
 import tr.main.elephantapps_sprint1.viewmodel.VerifyCodeViewModel
 
 class MailVerification : BaseActivity() {
@@ -39,6 +37,7 @@ class MailVerification : BaseActivity() {
         }
         binding.toolbarMailVerification.setNavigationOnClickListener {
             onBackPressed()
+            overridePendingTransition(R.anim.activity_left_to_right, R.anim.activity_right_to_left)
         }
 
         binding.toolbarMailVerification.setNavigationIcon(R.drawable.baseline_arrow_back_ios_24)

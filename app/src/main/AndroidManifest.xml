@@ -16,23 +16,41 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SearchBrands"
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1"/>
+        <activity
+            android:name=".activities.SearchSubCategory"
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1"/>
+        <activity
+            android:name=".activities.SearchCategory"
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
+        <activity
             android:name=".activities.SearchActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
+        <activity
+            android:name=".activities.AddProduct"
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
             android:name=".activities.ResetPassword"
-            android:exported="false" />
-        <activity
-            android:name=".activities.AnaSayfa"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
             android:name=".activities.ForgotPassword"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
             android:name=".activities.Welcome"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
             android:name=".activities.MailVerification"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
             android:name=".activities.LoginAndSignin"
             android:exported="false"

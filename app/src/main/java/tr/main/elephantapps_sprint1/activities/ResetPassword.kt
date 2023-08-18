@@ -39,6 +39,7 @@ class ResetPassword : BaseActivity() {
         }
         binding.toolbarResetPassword.setNavigationOnClickListener {
             onBackPressed()
+            overridePendingTransition(R.anim.activity_left_to_right, R.anim.activity_right_to_left)
         }
 
         binding.toolbarResetPassword.setNavigationIcon(R.drawable.baseline_arrow_back_ios_24)

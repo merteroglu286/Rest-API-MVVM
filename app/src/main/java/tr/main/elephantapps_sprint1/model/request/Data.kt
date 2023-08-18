@@ -6,5 +6,5 @@ data class Data(
     val fullName: String,
     val isSocialMediaAccount: Boolean,
     val refreshToken: String,
-    val userId: Int
+    val userId: Int,
 )

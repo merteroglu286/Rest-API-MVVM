@@ -4,11 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import tr.main.elephantapps_sprint1.R
-import tr.main.elephantapps_sprint1.databinding.CategoryItemLayoutBinding
 import tr.main.elephantapps_sprint1.databinding.FeaturedGaragesItemLayoutBinding
 import tr.main.elephantapps_sprint1.model.response.Home.Garages
-import tr.main.elephantapps_sprint1.util.Constans
+import tr.main.elephantapps_sprint1.Constants.Constans
 
 class FeaturedGaragesAdapter(private val garages: ArrayList<Garages>
 ) :

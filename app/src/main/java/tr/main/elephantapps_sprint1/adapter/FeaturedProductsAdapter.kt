@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tr.main.elephantapps_sprint1.databinding.FeaturedProductsItemLayoutBinding
 import tr.main.elephantapps_sprint1.model.response.Home.Product
-import tr.main.elephantapps_sprint1.util.Constans
+import tr.main.elephantapps_sprint1.Constants.Constans
 
 class FeaturedProductsAdapter(private val products: ArrayList<Product>
 ) :

@@ -1,6 +1,5 @@
 package tr.main.elephantapps_sprint1.service
 
-import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -8,16 +7,19 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.Query
+import tr.main.elephantapps_sprint1.model.request.CategoryFilterModel
 import tr.main.elephantapps_sprint1.model.request.HomeSearchRequestModel
 import tr.main.elephantapps_sprint1.model.request.PasswordResetModel
 import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
-import tr.main.elephantapps_sprint1.util.Constans
+import tr.main.elephantapps_sprint1.Constants.Constans
+import tr.main.elephantapps_sprint1.model.request.ProductRequestModel
 import tr.main.elephantapps_sprint1.model.response.LoginResponseModel
 import tr.main.elephantapps_sprint1.model.response.ResponseModel
 import tr.main.elephantapps_sprint1.model.request.UserLoginModel
 import tr.main.elephantapps_sprint1.model.request.UserModel
 import tr.main.elephantapps_sprint1.model.request.VerifyCodeModel
+import tr.main.elephantapps_sprint1.model.response.Brand.BrandModel
+import tr.main.elephantapps_sprint1.model.response.Category.CategoriesResponseModel
 import tr.main.elephantapps_sprint1.model.response.Home.HomeAllResponseModel
 import tr.main.elephantapps_sprint1.model.response.Search.SearchResultResponseModel
 import tr.main.elephantapps_sprint1.model.response.UserTokenResponseModel
@@ -65,4 +67,21 @@ interface ApiService {
     fun getHomeSearch(
         @Body homeSearchRequestModel: HomeSearchRequestModel,
         @Header("ApiKey") apiKey: String): Call<SearchResultResponseModel>
+
+    @POST(Constans.EXT_CATEGORY_GETCATEGORIES)
+    fun getCategories(
+        @Body categoryModel: CategoryFilterModel,
+        @Header("ApiKey") apiKey: String): Call<CategoriesResponseModel>
+
+    @GET(Constans.EXT_BRAND_GETBRANDS)
+    fun getBrands(
+        @Header("ApiKey") apiKey: String,
+        @Header("Authorization") authorization: String
+    ): Call<BrandModel>
+
+    @POST(Constans.EXT_PRODUCT_REQUEST_POST)
+    fun postProductRequest(
+        @Body productRequestModel: ProductRequestModel,
+        @Header("ApiKey") apiKey: String,
+        @Header("Authorization") authorization: String): Call<ResponseModel>
 }

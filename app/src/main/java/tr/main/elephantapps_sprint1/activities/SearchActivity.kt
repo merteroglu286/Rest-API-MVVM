@@ -1,6 +1,10 @@
 package tr.main.elephantapps_sprint1.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.util.AttributeSet
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
@@ -8,6 +12,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.adapter.BrandResultAdapter
 import tr.main.elephantapps_sprint1.adapter.CategoryResultAdapter
 import tr.main.elephantapps_sprint1.adapter.GarageResultAdapter
@@ -38,13 +43,13 @@ class SearchActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         binding = ActivitySearchBinding.inflate(layoutInflater)
+
 
         setContentView(binding.root)
 
         binding.searchView.requestFocus()
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(binding.searchView, InputMethodManager.SHOW_IMPLICIT)
 
         binding.searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -60,8 +65,12 @@ class SearchActivity : BaseActivity() {
 
         binding.ivBack.setOnClickListener{
             onBackPressed()
+            overridePendingTransition(R.anim.activity_left_to_right, R.anim.activity_right_to_left)
         }
 
+        binding.btnCreateRequest.setOnClickListener {
+            startActivity(Intent(this@SearchActivity,AddProduct::class.java))
+        }
         getHomeAllData()
 
 
@@ -109,28 +118,39 @@ class SearchActivity : BaseActivity() {
                     model.data?.products?.let { productList.addAll(it) }
 
 
-                    if(categoryList.isNotEmpty()){
-                        val categoryAdapter = CategoryResultAdapter(categoryList)
-                        binding.rvCategoryResult.layoutManager = GridLayoutManager(this,1)
-                        binding.rvCategoryResult.adapter = categoryAdapter
+                    if (categoryList.isEmpty() && brandList.isEmpty() && garageList.isEmpty() && productList.isEmpty()){
+                        binding.llEmptySearch.visibility = View.VISIBLE
+                        binding.rvPopularSearch.visibility = View.GONE
+                        binding.nested.visibility = View.GONE
+                        binding.txt.visibility = View.GONE
+                    }else{
+                        binding.nested.visibility = View.VISIBLE
+                        binding.llEmptySearch.visibility = View.GONE
+                        binding.txt.visibility = View.VISIBLE
+                        if(categoryList.isNotEmpty()){
+                            val categoryAdapter = CategoryResultAdapter(categoryList)
+                            binding.rvCategoryResult.layoutManager = GridLayoutManager(this,1)
+                            binding.rvCategoryResult.adapter = categoryAdapter
+                        }
+
+                        if (brandList.isNotEmpty()){
+                            val brandAdapter = BrandResultAdapter(brandList)
+                            binding.rvBrandResult.layoutManager = GridLayoutManager(this,1)
+                            binding.rvBrandResult.adapter = brandAdapter
+                        }
+
+                        if (garageList.isNotEmpty()){
+                            val garageAdapter = GarageResultAdapter(garageList)
+                            binding.rvGarageResult.layoutManager = GridLayoutManager(this,1)
+                            binding.rvGarageResult.adapter = garageAdapter
+                        }
+                        if (productList.isNotEmpty()){
+                            val productAdapter = ProductResultAdapter(productList)
+                            binding.rvProductResult.layoutManager = GridLayoutManager(this,3)
+                            binding.rvProductResult.adapter = productAdapter
+                        }
                     }
 
-                    if (brandList.isNotEmpty()){
-                        val brandAdapter = BrandResultAdapter(brandList)
-                        binding.rvBrandResult.layoutManager = GridLayoutManager(this,1)
-                        binding.rvBrandResult.adapter = brandAdapter
-                    }
-
-                    if (garageList.isNotEmpty()){
-                        val garageAdapter = GarageResultAdapter(garageList)
-                        binding.rvGarageResult.layoutManager = GridLayoutManager(this,1)
-                        binding.rvGarageResult.adapter = garageAdapter
-                    }
-                    if (productList.isNotEmpty()){
-                        val productAdapter = ProductResultAdapter(productList)
-                        binding.rvProductResult.layoutManager = GridLayoutManager(this,3)
-                        binding.rvProductResult.adapter = productAdapter
-                    }
 
                 }
             })

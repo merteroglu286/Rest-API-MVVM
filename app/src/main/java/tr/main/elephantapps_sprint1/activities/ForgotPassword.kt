@@ -2,32 +2,14 @@ package tr.main.elephantapps_sprint1.activities
 
 import android.app.Dialog
 import android.content.Intent
-import android.hardware.display.VirtualDisplay
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.databinding.ActivityForgotPasswordBinding
-import tr.main.elephantapps_sprint1.model.request.SendVerificationCodeModel
-import tr.main.elephantapps_sprint1.model.request.UserLoginModel
-import tr.main.elephantapps_sprint1.model.request.VerifyCodeModel
-import tr.main.elephantapps_sprint1.model.response.ResponseModel
-import tr.main.elephantapps_sprint1.service.ApiService
-import tr.main.elephantapps_sprint1.util.Constans
-import tr.main.elephantapps_sprint1.util.Constans.Companion.API_KEY
-import tr.main.elephantapps_sprint1.util.Constans.Companion.BASE_URL
-import tr.main.elephantapps_sprint1.util.EmailSender
-import tr.main.elephantapps_sprint1.util.Utils
+import tr.main.elephantapps_sprint1.enums.EmailSender
 import tr.main.elephantapps_sprint1.viewmodel.ForgotPasswordViewModel
-import tr.main.elephantapps_sprint1.viewmodel.SigninAndLoginViewModel
-import tr.main.elephantapps_sprint1.viewmodel.VerifyCodeViewModel
 
 class ForgotPassword : BaseActivity() {
 
@@ -52,6 +34,7 @@ class ForgotPassword : BaseActivity() {
         }
         binding.toolbarMailVerification.setNavigationOnClickListener {
             onBackPressed()
+            overridePendingTransition(R.anim.activity_left_to_right, R.anim.activity_right_to_left)
         }
 
         binding.toolbarMailVerification.setNavigationIcon(R.drawable.baseline_arrow_back_ios_24)

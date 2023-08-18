@@ -10,5 +10,6 @@
     <color name="light">#FFFFFF</color>
     <color name="dark">#0F0B08</color>
     <color name="background">#0F0F0F</color>
+    <color name="light_black">#1D1D1D</color>
 
 </resources>

@@ -1,6 +1,6 @@
 package tr.main.elephantapps_sprint1.model.request
 
-import tr.main.elephantapps_sprint1.util.SocialAuthenticationPlatform
+import tr.main.elephantapps_sprint1.enums.SocialAuthenticationPlatform
 
 data class SocialAuthenticationModel(
     val token: String?,

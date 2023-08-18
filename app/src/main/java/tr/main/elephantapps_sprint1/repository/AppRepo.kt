@@ -1,18 +1,22 @@
 package tr.main.elephantapps_sprint1.repository
 
+import android.app.Activity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import tr.main.elephantapps_sprint1.model.request.CategoryFilterModel
 import tr.main.elephantapps_sprint1.model.request.HomeSearchRequestModel
 import tr.main.elephantapps_sprint1.model.request.PasswordResetModel
-import tr.main.elephantapps_sprint1.model.request.SendVerificationCodeModel
 import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
-import tr.main.elephantapps_sprint1.util.Constans
+import tr.main.elephantapps_sprint1.Constants.Constans
+import tr.main.elephantapps_sprint1.model.request.ProductRequestModel
 import tr.main.elephantapps_sprint1.model.response.LoginResponseModel
 import tr.main.elephantapps_sprint1.model.response.ResponseModel
 import tr.main.elephantapps_sprint1.model.request.UserLoginModel
 import tr.main.elephantapps_sprint1.model.request.UserModel
 import tr.main.elephantapps_sprint1.model.request.VerifyCodeModel
+import tr.main.elephantapps_sprint1.model.response.Brand.BrandModel
+import tr.main.elephantapps_sprint1.model.response.Category.CategoriesResponseModel
 import tr.main.elephantapps_sprint1.model.response.Home.HomeAllResponseModel
 import tr.main.elephantapps_sprint1.model.response.Search.SearchResultResponseModel
 import tr.main.elephantapps_sprint1.model.response.UserTokenResponseModel
@@ -55,26 +59,26 @@ class AppRepo {
 
         fun callApiForLogin(
             userLoginModel:UserLoginModel,
-            callback:(success: Boolean, message: String) -> Unit
+            callback:(loginResponseModel: LoginResponseModel?,success: Boolean, message: String) -> Unit
         ) {
-            apiService.userLogin(userLoginModel,Constans.API_KEY).enqueue(object : Callback<LoginResponseModel> {
+            apiService.userLogin(userLoginModel, Constans.API_KEY).enqueue(object : Callback<LoginResponseModel> {
                 override fun onResponse(call: Call<LoginResponseModel>, response: Response<LoginResponseModel>) {
                     if(response.isSuccessful){
                         val statusCode = response.code()
                         if (statusCode == 200){
                             val success = response.body()!!.success
                             if (success){
-                                callback(true,"")
+                                callback(response.body(),true,"")
                             }else{
-                                callback(false,response.body()!!.message)
+                                callback(null,false,response.body()!!.message)
                             }
                         }else{
-                            callback(false, "Status code error: $statusCode")
+                            callback(null,false, "Status code error: $statusCode")
                         }
                     }
                 }
                 override fun onFailure(call: Call<LoginResponseModel>, t: Throwable) {
-                    callback(false,t.message.toString())
+                    callback(null,false,t.message.toString())
                 }
             })
         }
@@ -83,7 +87,7 @@ class AppRepo {
             verifyCodeModel: VerifyCodeModel,
             callback:(success: Boolean, message: String) -> Unit
         ) {
-            apiService.verifyCode(verifyCodeModel,Constans.API_KEY).enqueue(object : Callback<ResponseModel> {
+            apiService.verifyCode(verifyCodeModel, Constans.API_KEY).enqueue(object : Callback<ResponseModel> {
                 override fun onResponse(call: Call<ResponseModel>, response: Response<ResponseModel>) {
                     if(response.isSuccessful){
                         val statusCode = response.code()
@@ -111,7 +115,7 @@ class AppRepo {
             callback:(success: Boolean, message: String) -> Unit
         ) {
 
-            apiService.getVerificationCode(email,Constans.API_KEY).enqueue(object : Callback<ResponseModel> {
+            apiService.getVerificationCode(email, Constans.API_KEY).enqueue(object : Callback<ResponseModel> {
                 override fun onResponse(call: Call<ResponseModel>,response: Response<ResponseModel>) {
                     if(response.isSuccessful){
                         val statusCode = response.code()
@@ -139,7 +143,7 @@ class AppRepo {
             callback:(success: Boolean, message: String) -> Unit
         ) {
 
-            apiService.passwordReset(passwordResetModel,Constans.API_KEY).enqueue(object : Callback<ResponseModel> {
+            apiService.passwordReset(passwordResetModel, Constans.API_KEY).enqueue(object : Callback<ResponseModel> {
                 override fun onResponse(call: Call<ResponseModel>,response: Response<ResponseModel>) {
                     if(response.isSuccessful){
                         val statusCode = response.code()
@@ -167,7 +171,7 @@ class AppRepo {
             callback:(success: Boolean, message: String) -> Unit
         ) {
 
-            apiService.loginwithGoogle(socialAuthenticationModel,Constans.API_KEY).enqueue(object : Callback<UserTokenResponseModel> {
+            apiService.loginwithGoogle(socialAuthenticationModel, Constans.API_KEY).enqueue(object : Callback<UserTokenResponseModel> {
                 override fun onResponse(call: Call<UserTokenResponseModel>, response: Response<UserTokenResponseModel>) {
                     if(response.isSuccessful){
                         val statusCode = response.code()
@@ -224,7 +228,7 @@ class AppRepo {
             callback:(searchResultResponseModel: SearchResultResponseModel?,success: Boolean, message: String) -> Unit
         ) {
 
-            apiService.getHomeSearch(homeSearchRequestModel,Constans.API_KEY).enqueue(object : Callback<SearchResultResponseModel> {
+            apiService.getHomeSearch(homeSearchRequestModel, Constans.API_KEY).enqueue(object : Callback<SearchResultResponseModel> {
                 override fun onResponse(call: Call<SearchResultResponseModel>, response: Response<SearchResultResponseModel>) {
                     if(response.isSuccessful){
                         val statusCode = response.code()
@@ -243,6 +247,94 @@ class AppRepo {
 
                 override fun onFailure(call: Call<SearchResultResponseModel>, t: Throwable) {
                     callback(null,false,t.message.toString())
+                }
+            })
+        }
+
+
+        fun callApiCategories(
+            categoryFilterModel: CategoryFilterModel,
+            callback:(categoriesResponseModel: CategoriesResponseModel?, success: Boolean, message: String) -> Unit
+        ) {
+
+            apiService.getCategories(categoryFilterModel, Constans.API_KEY).enqueue(object : Callback<CategoriesResponseModel> {
+                override fun onResponse(call: Call<CategoriesResponseModel>, response: Response<CategoriesResponseModel>) {
+                    if(response.isSuccessful){
+                        val statusCode = response.code()
+                        if (statusCode == 200){
+                            val success = response.body()!!.success
+                            if (success){
+                                callback(response.body()!!,true,"")
+                            }else{
+                                callback(null,false,response.body()!!.message.toString())
+                            }
+                        }else{
+                            callback(null,false, "Status code error: $statusCode")
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<CategoriesResponseModel>, t: Throwable) {
+                    callback(null,false,t.message.toString())
+                }
+            })
+        }
+
+
+        fun callApiBrands(
+            activity:Activity,
+            callback:(brandsModel: BrandModel?,success: Boolean, message: String) -> Unit
+        ) {
+
+            apiService.getBrands(Constans.API_KEY,"Bearer " + Utils.getUserAccessToken(activity)).enqueue(object : Callback<BrandModel> {
+                override fun onResponse(call: Call<BrandModel>, response: Response<BrandModel>) {
+                    if(response.isSuccessful){
+                        val statusCode = response.code()
+                        if (statusCode == 200){
+                            val success = response.body()!!.success
+                            if (success){
+                                callback(response.body()!!,true,"")
+                            }else{
+                                callback(null,false,response.body()!!.message.toString())
+                            }
+                        }else{
+                            callback(null,false, "Status code error: $statusCode")
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BrandModel>, t: Throwable) {
+                    callback(null,false,t.message.toString())
+                }
+            })
+        }
+
+
+        fun callApiProductRequest(
+            activity: Activity,
+            productRequestModel: ProductRequestModel,
+            callback:( success: Boolean, message: String) -> Unit
+        ) {
+
+            apiService.postProductRequest(productRequestModel,Constans.API_KEY,"Bearer " + Utils.getUserAccessToken(activity)).enqueue(object : Callback<ResponseModel> {
+                override fun onResponse(call: Call<ResponseModel>, response: Response<ResponseModel>) {
+                    if(response.isSuccessful){
+                        val statusCode = response.code()
+                        if (statusCode == 200){
+                            val success = response.body()!!.success
+                            if (success){
+                                callback(true,"")
+                            }else{
+                                callback(false,response.body()!!.message.toString())
+                            }
+                        }else{
+                            callback(false, "Status code error: $statusCode")
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
+                    callback(false,t.message.toString())
                 }
             })
         }

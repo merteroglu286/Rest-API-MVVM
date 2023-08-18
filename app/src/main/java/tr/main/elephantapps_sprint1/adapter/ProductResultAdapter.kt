@@ -2,14 +2,11 @@ package tr.main.elephantapps_sprint1.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tr.main.elephantapps_sprint1.databinding.FeaturedProductsItemLayoutBinding
 import tr.main.elephantapps_sprint1.model.response.Search.Product
-import tr.main.elephantapps_sprint1.util.Constans
-import java.util.Locale
-import android.widget.Filter
+import tr.main.elephantapps_sprint1.Constants.Constans
 
 class ProductResultAdapter (private val products: ArrayList<Product>
 ) :

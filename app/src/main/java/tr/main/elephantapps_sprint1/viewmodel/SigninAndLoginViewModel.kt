@@ -8,12 +8,14 @@ import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
 import tr.main.elephantapps_sprint1.repository.AppRepo
 import tr.main.elephantapps_sprint1.model.request.UserLoginModel
 import tr.main.elephantapps_sprint1.model.request.UserModel
+import tr.main.elephantapps_sprint1.model.response.LoginResponseModel
 
 class SigninAndLoginViewModel:ViewModel() {
 
     var successSigninLiveData = MutableLiveData<Boolean>()
     var errorSigninLiveData = MutableLiveData<String>()
 
+    var loginResponseModelLiveData = MutableLiveData<LoginResponseModel>()
     var successLoginLiveData = MutableLiveData<Boolean>()
     var errorLoginLiveData = MutableLiveData<String>()
 
@@ -30,7 +32,8 @@ class SigninAndLoginViewModel:ViewModel() {
 
     fun getStatusCodeForLogin(userLoginModel:UserLoginModel) {
 
-        AppRepo.callApiForLogin(userLoginModel) { success,message ->
+        AppRepo.callApiForLogin(userLoginModel) { data,success,message ->
+            loginResponseModelLiveData.value = data
             successLoginLiveData.value = success
             errorLoginLiveData.value = message
         }

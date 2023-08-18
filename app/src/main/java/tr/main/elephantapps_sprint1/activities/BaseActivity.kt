@@ -15,6 +15,7 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
         // Navigation bar'ı görünmez yap
         val window = window
         val controller = WindowInsetsControllerCompat(window, window.decorView)
