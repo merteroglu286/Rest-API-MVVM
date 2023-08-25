@@ -61,6 +61,7 @@ class ForgotPassword : BaseActivity() {
                 intent.putExtra("email_sender", EmailSender.ForgotPasswordActivity)
                 intent.putExtra("email",binding.etEmail.text.toString())
                 startActivity(intent)
+                overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                 finish()
             }
         })

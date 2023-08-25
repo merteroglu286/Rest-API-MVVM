@@ -1,6 +1,8 @@
 package tr.main.elephantapps_sprint1.repository
 
 import android.app.Activity
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -9,7 +11,7 @@ import tr.main.elephantapps_sprint1.model.request.HomeSearchRequestModel
 import tr.main.elephantapps_sprint1.model.request.PasswordResetModel
 import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
 import tr.main.elephantapps_sprint1.Constants.Constans
-import tr.main.elephantapps_sprint1.model.request.ProductRequestModel
+import tr.main.elephantapps_sprint1.model.request.AddProduct.ProductAddModel
 import tr.main.elephantapps_sprint1.model.response.LoginResponseModel
 import tr.main.elephantapps_sprint1.model.response.ResponseModel
 import tr.main.elephantapps_sprint1.model.request.UserLoginModel
@@ -18,6 +20,7 @@ import tr.main.elephantapps_sprint1.model.request.VerifyCodeModel
 import tr.main.elephantapps_sprint1.model.response.Brand.BrandModel
 import tr.main.elephantapps_sprint1.model.response.Category.CategoriesResponseModel
 import tr.main.elephantapps_sprint1.model.response.Home.HomeAllResponseModel
+import tr.main.elephantapps_sprint1.model.response.ProductIdResponseModel
 import tr.main.elephantapps_sprint1.model.response.Search.SearchResultResponseModel
 import tr.main.elephantapps_sprint1.model.response.UserTokenResponseModel
 import tr.main.elephantapps_sprint1.util.Utils
@@ -310,26 +313,46 @@ class AppRepo {
         }
 
 
-        fun callApiProductRequest(
+        fun callApiProduct(
             activity: Activity,
-            productRequestModel: ProductRequestModel,
-            callback:( success: Boolean, message: String) -> Unit
+            productAddModel: ProductAddModel,
+            callback:(data:Int, success: Boolean, message: String) -> Unit
         ) {
 
-            apiService.postProductRequest(productRequestModel,Constans.API_KEY,"Bearer " + Utils.getUserAccessToken(activity)).enqueue(object : Callback<ResponseModel> {
-                override fun onResponse(call: Call<ResponseModel>, response: Response<ResponseModel>) {
+            apiService.postProduct(productAddModel,Constans.API_KEY,
+                "Bearer " + Constans.ACCESS_TOKEN)
+                .enqueue(object : Callback<ProductIdResponseModel> {
+                override fun onResponse(call: Call<ProductIdResponseModel>, response: Response<ProductIdResponseModel>) {
                     if(response.isSuccessful){
                         val statusCode = response.code()
                         if (statusCode == 200){
                             val success = response.body()!!.success
                             if (success){
-                                callback(true,"")
+                                callback(response.body()!!.data,true,"")
                             }else{
-                                callback(false,response.body()!!.message.toString())
+                                callback(0,false,response.body()!!.message.toString())
                             }
                         }else{
-                            callback(false, "Status code error: $statusCode")
+                            callback(0,false, "Status code error: $statusCode")
                         }
+                    }
+                }
+
+                override fun onFailure(call: Call<ProductIdResponseModel>, t: Throwable) {
+                    callback(0,false,t.message.toString())
+                }
+            })
+        }
+/*
+        fun uploadPhotoAndData(photoPart: MultipartBody.Part,
+                               idPart: RequestBody,
+                               callback:(success: Boolean, message: String) -> Unit) {
+            apiService.postProductPhotos(photoPart, idPart,Constans.API_KEY,"Bearer " + Constans.ACCESS_TOKEN).enqueue(object : Callback<ResponseModel> {
+                override fun onResponse(call: Call<ResponseModel>, response: Response<ResponseModel>) {
+                    if (response.isSuccessful) {
+                        callback(true,"")
+                    } else {
+                        callback(false,response.body()!!.message.toString())
                     }
                 }
 
@@ -338,7 +361,9 @@ class AppRepo {
                 }
             })
         }
+*/
 
     }
+
 
 }

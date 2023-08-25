@@ -13,9 +13,16 @@ import tr.main.elephantapps_sprint1.model.response.Home.Category
 import tr.main.elephantapps_sprint1.model.response.Search.Garage
 import java.util.Locale
 
-class SearchCategoryAdapter (private val categories: ArrayList<Data>?, private val onItemClick: (Data) -> Unit
-) :
-    RecyclerView.Adapter<SearchCategoryAdapter.ViewHolder>(){
+class SearchCategoryAdapter(
+    private var categories: ArrayList<Data>,
+    private var onItemClick: (Data) -> Unit
+) : RecyclerView.Adapter<SearchCategoryAdapter.ViewHolder>() {
+
+    private var filteredCategories: ArrayList<Data> = ArrayList()
+
+    init {
+        filteredCategories.addAll(categories)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -25,27 +32,29 @@ class SearchCategoryAdapter (private val categories: ArrayList<Data>?, private v
         )
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val context = holder.itemView.context
-        val category = categories!![position]
+        val category = filteredCategories[position]
         holder.tvName.text = category.name
 
         holder.itemView.setOnClickListener {
             onItemClick(category)
         }
-
     }
 
     override fun getItemCount(): Int {
-        return categories!!.size
-
+        return filteredCategories.size
     }
 
-
-    class ViewHolder(binding: SubcategoryItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(binding: SubcategoryItemLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         val tvName = binding.nameCategory
     }
 
+    fun setFilteredList(filteredList: ArrayList<Data>) {
+        filteredCategories.clear()
+        filteredCategories.addAll(filteredList)
+        notifyDataSetChanged()
+    }
 }
 

@@ -2,29 +2,60 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
+    <uses-feature android:name="android.hardware.camera.any" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/wheel_image"
+        android:label="Tomofilya Mert Eroglu"
         android:supportsRtl="true"
         android:theme="@style/Theme.Elephantapps_Sprint1"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity
+            android:name=".activities.AddProduct"
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1"/>
+        <activity
+            android:name=".activities.IlaniGazla"
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1"/>
+        <activity
+            android:name=".activities.Price"
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1"/>
+        <activity
+            android:name=".activities.CargoSize"
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1"/>
+        <activity
+            android:name=".activities.SearchSubCategoryX"
+            android:exported="false"
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
             android:name=".activities.SearchBrands"
             android:exported="false"
-            android:theme="@style/Theme.Elephantapps_Sprint1"/>
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
             android:name=".activities.SearchSubCategory"
             android:exported="false"
-            android:theme="@style/Theme.Elephantapps_Sprint1"/>
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
-            android:name=".activities.SearchCategory"
+            android:name=".activities.AddPhoto"
             android:exported="false"
             android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
@@ -32,7 +63,7 @@
             android:exported="false"
             android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
-            android:name=".activities.AddProduct"
+            android:name=".activities.SearchCategory"
             android:exported="false"
             android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity

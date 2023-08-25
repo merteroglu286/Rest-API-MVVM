@@ -53,9 +53,11 @@ class Splash : BaseActivity() {
 
                 if (sharedPreferences.getBoolean("isLogin", false)){
                     startActivity(Intent(this@Splash,Dashboard::class.java))
+                    overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                     finish()
                 }else{
                     startActivity(Intent(this@Splash,Onboarding::class.java))
+                    overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                     finish()
                 }
             }

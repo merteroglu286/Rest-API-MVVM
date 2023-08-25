@@ -70,6 +70,7 @@ class SearchActivity : BaseActivity() {
 
         binding.btnCreateRequest.setOnClickListener {
             startActivity(Intent(this@SearchActivity,AddProduct::class.java))
+            overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
         }
         getHomeAllData()
 
@@ -183,7 +184,6 @@ class SearchActivity : BaseActivity() {
 
         viewModel.homeAllLiveData.observe(this , Observer { model->
             if (success){
-
                 popularSearchList.clear()
                 popularSearchList.addAll(model.data.popularSearch)
 

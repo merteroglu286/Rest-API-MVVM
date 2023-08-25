@@ -1,27 +1,28 @@
 package tr.main.elephantapps_sprint1.activities
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
-import android.widget.Toast
+import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import tr.main.elephantapps_sprint1.Constants.Constans
 import tr.main.elephantapps_sprint1.R
-import tr.main.elephantapps_sprint1.adapter.SearchCategoryAdapter
 import tr.main.elephantapps_sprint1.adapter.SubCategoriesAdapter
-import tr.main.elephantapps_sprint1.databinding.ActivitySearchCategoryBinding
 import tr.main.elephantapps_sprint1.databinding.ActivitySearchSubCategoryBinding
+import tr.main.elephantapps_sprint1.model.request.AddProduct.AdditionalInfoModel
 import tr.main.elephantapps_sprint1.model.request.CategoryFilterModel
+import tr.main.elephantapps_sprint1.model.request.AddProduct.ProductAddModel
 import tr.main.elephantapps_sprint1.model.response.Category.Data
 import tr.main.elephantapps_sprint1.model.response.Category.SubCategory
 import tr.main.elephantapps_sprint1.viewmodel.CategoriesViewModel
+import java.util.Locale
 
 class SearchSubCategory : BaseActivity() {
 
@@ -30,24 +31,40 @@ class SearchSubCategory : BaseActivity() {
     private val subCategoryList = ArrayList<SubCategory>()
 
     private var subCategoriesAdapter: SubCategoriesAdapter? = null
-    private var success : Boolean = false
-    private var brandName : String? = null
-    private var brandId : Int? = 0
+
+    private var receivedProduct : ProductAddModel? = null
+    private var additionalInfo : AdditionalInfoModel? = null
+    companion object {
+        @SuppressLint("StaticFieldLeak")
+        lateinit var searchSubCategoryActivity: Activity
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchSubCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        brandName = intent.getStringExtra(Constans.BRAND_NAME)
-        brandId = intent.getIntExtra(Constans.BRAND_ID,0)
 
-
+        receivedProduct = intent.getParcelableExtra("product") as? ProductAddModel
+        additionalInfo = intent.getParcelableExtra("additionalInfo") as? AdditionalInfoModel
 
         createToolbar()
-
-        getCategoryList()
         getsubCategoryList()
+        searchSubCategoryActivity = this
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                filterList(newText)
+                return true
+            }
+        })
+
+
     }
 
 
@@ -79,6 +96,23 @@ class SearchSubCategory : BaseActivity() {
         binding.searchView.queryHint = queryHint
     }
 
+    private fun filterList(query: String?) {
+
+        if (query != null) {
+            val filteredList = ArrayList<SubCategory>()
+            for (i in subCategoryList) {
+                if (i.name.lowercase(Locale.ROOT).contains(query)) {
+                    filteredList.add(i)
+                }
+            }
+            if (filteredList.isEmpty()) {
+                filteredList.clear()
+            } else {
+                subCategoriesAdapter!!.setFilteredList(filteredList)
+            }
+        }
+    }
+
     private fun getsubCategoryList(){
         val viewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
 
@@ -87,21 +121,14 @@ class SearchSubCategory : BaseActivity() {
         )
         viewModel.getDataFromAPI(model)
 
-        viewModel.successLiveData.observe(this, Observer {success ->
-            this.success = success
-        })
-
-        viewModel.errorLiveData.observe(this,Observer{message->
-            if (message != ""){
-                Toast.makeText(this,message,Toast.LENGTH_LONG).show()
-            }
-
-        })
 
         viewModel.categoriesLiveData.observe(this, Observer { model->
-            if (success){
+            if (model.success){
 
                 subCategoryList.clear()
+
+                categoryList.clear()
+                categoryList.addAll(model.data)
 
                 val itemName = intent.getStringExtra("itemName")
                 for (x in categoryList){
@@ -112,18 +139,26 @@ class SearchSubCategory : BaseActivity() {
                 }
 
                 subCategoriesAdapter = SubCategoriesAdapter(subCategoryList) { data ->
-                    val intent = Intent(this@SearchSubCategory,AddProduct::class.java)
-                    intent.putExtra(Constans.CATEGORY_NAME,data.name)
-                    intent.putExtra(Constans.CATEGORY_ID,data.id)
 
-                    if (brandName != null){
-                        intent.putExtra(Constans.BRAND_NAME,brandName)
+                    if (data.subCategories.isEmpty()){
+                        receivedProduct?.categoryId = data.id
+                        additionalInfo?.categoryName = data.name
+                        AddProduct.addProductActivity.finish()
+                        SearchCategory.searchCategoryActivity.finish()
+                        val intent = Intent(this@SearchSubCategory,AddProduct::class.java)
+                        intent.putExtra("product",receivedProduct)
+                        intent.putExtra("additionalInfo",additionalInfo)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                        finish()
+                    }else{
+                        val intent = Intent(this@SearchSubCategory,SearchSubCategoryX::class.java)
+                        intent.putExtra("subName",data.name)
+                        intent.putExtra("product",receivedProduct)
+                        intent.putExtra("additionalInfo",additionalInfo)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                     }
-                    if (brandId != 0){
-                        intent.putExtra(Constans.BRAND_ID,brandId)
-                    }
-                    startActivity(intent)
-                    finish()
 
                     // parent.name verisine asagıdan ulasabilirsin
                     /*
@@ -137,35 +172,6 @@ class SearchSubCategory : BaseActivity() {
                 }
                 binding.rvSubcategories.layoutManager = GridLayoutManager(this,3)
                 binding.rvSubcategories.adapter = subCategoriesAdapter
-            }
-        })
-    }
-
-    private fun getCategoryList(){
-        val viewModel = ViewModelProvider(this).get(CategoriesViewModel::class.java)
-
-        val model = CategoryFilterModel(
-            false
-        )
-        viewModel.getDataFromAPI(model)
-
-        viewModel.successLiveData.observe(this, Observer {success ->
-            this.success = success
-        })
-
-        viewModel.errorLiveData.observe(this,Observer{message->
-            if (message != ""){
-                Toast.makeText(this,message,Toast.LENGTH_LONG).show()
-            }
-
-        })
-
-        viewModel.categoriesLiveData.observe(this, Observer { model->
-            if (success){
-                categoryList.clear()
-                for (list in model.data) {
-                    categoryList.add(list)
-                }
             }
         })
     }

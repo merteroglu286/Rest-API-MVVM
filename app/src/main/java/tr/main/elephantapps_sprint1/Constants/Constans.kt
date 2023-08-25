@@ -14,6 +14,8 @@ class Constans {
         const val EXT_CATEGORY_GETCATEGORIES = "Category/GetCategories"
         const val EXT_BRAND_GETBRANDS = "Brand/GetBrands"
         const val EXT_PRODUCT_REQUEST_POST = "Product/ProductRequestPost"
+        const val EXT_PRODUCT_POST = "Product/Post"
+        const val EXT_PRODUCT_PHOTOS = "Product/ProductPhotosPost"
 
         const val API_KEY = "COF40RZ95GBJZ7R08QVJMIDR0TLEJL1DDEXY10K0H8MQ03DJJ8"
         const val ACCEPT = "application/json"
@@ -25,12 +27,12 @@ class Constans {
         const val GARAGE_LOGOS_URL = "https://tomofilyastorage.blob.core.windows.net/garagelogos/"
         const val PRODUCT_PHOTOS_URL = "https://tomofilyastorage.blob.core.windows.net/productphotos/"
 
-        const val ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im1lcnRlcm9nbHU4OTNAZ21haWwuY29tIiwibmFtZWlkIjoiMTM2MSIsImVtYWlsIjoibWVydGVyb2dsdTg5M0BnbWFpbC5jb20iLCJuYmYiOjE2OTIyMTkzNTEsImV4cCI6MTY5MjgyNDE1MSwiaWF0IjoxNjkyMjE5MzUxfQ.2aq9CDqqVwJzcXg4qO2BswmK1CPP0q_jc2sAX66Phgo"
+        const val ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Inl1c3VmdG9tb2ZpbHlheXVydGljaUBnbWFpbC5jb20iLCJuYW1laWQiOiI0NjQiLCJlbWFpbCI6Inl1c3VmdG9tb2ZpbHlheXVydGljaUBnbWFpbC5jb20iLCJuYmYiOjE2OTI2OTczNjAsImV4cCI6MTY5MzMwMjE2MCwiaWF0IjoxNjkyNjk3MzYwfQ.HL5s_u6hiPxfySAaJdQ75fiOmeTYuKDGV7VWSHOJ_kA"
 
-        const val CATEGORY_NAME = "categoryName"
-        const val BRAND_NAME = "brandName"
-        const val CATEGORY_ID = "categoryId"
-        const val BRAND_ID = "brandId"
+        const val TURKISH_LIRA_SYMBOL = "\u20BA"
+
+        const val FILE_NAME_FORMAT = "yy-MM-dd-HH-ss-SSS"
+        const val REQUEST_CODE_PERMISSIONS = 123
 
     }
 }

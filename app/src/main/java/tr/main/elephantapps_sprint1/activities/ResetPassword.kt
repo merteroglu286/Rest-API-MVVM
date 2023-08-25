@@ -82,6 +82,7 @@ class ResetPassword : BaseActivity() {
                 val intent = Intent(this@ResetPassword,LoginAndSignin::class.java)
                 intent.putExtra("finished",1)
                 startActivity(intent)
+                overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                 finish()
             }
         })

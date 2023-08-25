@@ -108,6 +108,7 @@ class LoginAndSignin : BaseActivity() {
 
         binding.txtForgotPassword.setOnClickListener{
             startActivity(Intent(this@LoginAndSignin,ForgotPassword::class.java))
+            overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
         }
 
         binding.btnSignin.setOnClickListener {
@@ -152,6 +153,7 @@ class LoginAndSignin : BaseActivity() {
                 intent.putExtra("email_sender", EmailSender.LoginSigninActivity)
                 intent.putExtra("email",binding.etEmail.text.toString())
                 startActivity(intent)
+                overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
             }
         })
 
@@ -229,6 +231,7 @@ class LoginAndSignin : BaseActivity() {
             if (success == true) {
                 val intent = Intent(this@LoginAndSignin,Dashboard::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                 finish()
             }
         })

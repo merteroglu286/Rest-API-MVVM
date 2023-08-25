@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import tr.main.elephantapps_sprint1.R
+import tr.main.elephantapps_sprint1.activities.AddProduct
 import tr.main.elephantapps_sprint1.activities.SearchActivity
 import tr.main.elephantapps_sprint1.adapter.CategoryAdapter
 import tr.main.elephantapps_sprint1.adapter.FeaturedGaragesAdapter
@@ -46,7 +47,6 @@ class Homepage : Fragment() {
         binding = FragmentHomepaegBinding.inflate(layoutInflater,container,false)
         return binding.root
 
-
     }
 
 
@@ -59,8 +59,14 @@ class Homepage : Fragment() {
             if (hasFocus){
                 val intent = Intent(v.context, SearchActivity::class.java)
                 v.context.startActivity(intent)
+                this.activity?.overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                 binding.searchBar.clearFocus()
             }
+        }
+
+        binding.btnAddProduct.setOnClickListener{
+            startActivity(Intent(this.activity,AddProduct::class.java))
+            this.activity?.overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
         }
     }
     private fun getHomeAllData(){

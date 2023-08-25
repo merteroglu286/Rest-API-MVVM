@@ -73,12 +73,14 @@ class MailVerification : BaseActivity() {
                     EmailSender.LoginSigninActivity -> {
                         val intent = Intent(this@MailVerification,Welcome::class.java)
                         startActivity(intent)
+                        overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                     }
                     EmailSender.ForgotPasswordActivity -> {
                         val intent = Intent(this@MailVerification,ResetPassword::class.java)
                         intent.putExtra("email",email)
                         intent.putExtra("code",binding.pinview.text.toString())
                         startActivity(intent)
+                        overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                     }
                 }
             }

@@ -1,5 +1,4 @@
 package tr.main.elephantapps_sprint1.model.response.Category
-
 data class SubCategoryXX(
     val iconUrl: Any,
     val id: Int,

@@ -1,28 +1,35 @@
 package tr.main.elephantapps_sprint1.service
 
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
+import tr.main.elephantapps_sprint1.Constants.Constans
+import tr.main.elephantapps_sprint1.model.request.AddProduct.ProductAddModel
 import tr.main.elephantapps_sprint1.model.request.CategoryFilterModel
 import tr.main.elephantapps_sprint1.model.request.HomeSearchRequestModel
 import tr.main.elephantapps_sprint1.model.request.PasswordResetModel
-import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
-import tr.main.elephantapps_sprint1.Constants.Constans
 import tr.main.elephantapps_sprint1.model.request.ProductRequestModel
-import tr.main.elephantapps_sprint1.model.response.LoginResponseModel
-import tr.main.elephantapps_sprint1.model.response.ResponseModel
+import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
 import tr.main.elephantapps_sprint1.model.request.UserLoginModel
 import tr.main.elephantapps_sprint1.model.request.UserModel
 import tr.main.elephantapps_sprint1.model.request.VerifyCodeModel
 import tr.main.elephantapps_sprint1.model.response.Brand.BrandModel
 import tr.main.elephantapps_sprint1.model.response.Category.CategoriesResponseModel
 import tr.main.elephantapps_sprint1.model.response.Home.HomeAllResponseModel
+import tr.main.elephantapps_sprint1.model.response.LoginResponseModel
+import tr.main.elephantapps_sprint1.model.response.ProductIdResponseModel
+import tr.main.elephantapps_sprint1.model.response.ResponseModel
 import tr.main.elephantapps_sprint1.model.response.Search.SearchResultResponseModel
 import tr.main.elephantapps_sprint1.model.response.UserTokenResponseModel
+
 
 interface ApiService {
     @Headers(
@@ -84,4 +91,20 @@ interface ApiService {
         @Body productRequestModel: ProductRequestModel,
         @Header("ApiKey") apiKey: String,
         @Header("Authorization") authorization: String): Call<ResponseModel>
+
+    @POST(Constans.EXT_PRODUCT_POST)
+    fun postProduct(
+        @Body productAddModel: ProductAddModel,
+        @Header("ApiKey") apiKey: String,
+        @Header("Authorization") authorization: String): Call<ProductIdResponseModel>
+
+    @Multipart
+    @POST(Constans.EXT_PRODUCT_PHOTOS)
+    fun uploadProductPhoto(
+        @Part("ProductId") productId: RequestBody,
+        @Part productPhoto: MultipartBody.Part,
+        @Header("ApiKey") apiKey: String,
+        @Header("Authorization") authorization: String
+    ): Call<ResponseModel>
+
 }
