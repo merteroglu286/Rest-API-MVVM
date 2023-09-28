@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:drawable="@drawable/light_bg_round_check" />
+    <item android:state_checked="false" android:drawable="@drawable/white_outlined_bg_full_round" />
+</selector>

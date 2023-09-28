@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.FilterProduct"
+    android:paddingTop="12dp"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:id="@+id/ll_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
+
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/baseline_arrow_back_ios_24"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/search_bar_background">
+
+            <SearchView
+                android:id="@+id/search_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:hint="Ürün / Kategori / Marka / Garaj ara"
+                android:textSize="12sp"
+                android:iconifiedByDefault="false"
+                android:searchIcon="@null"
+                android:closeIcon="@null"
+                />
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/icon_card_search_small"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginHorizontal="17dp"
+        android:layout_marginTop="24dp"
+        android:layout_below="@id/ll_search_bar">
+
+        <Button
+            android:id="@+id/btn_filter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/txt_filtrele"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:paddingHorizontal="40dp"
+            android:layout_marginHorizontal="3dp"
+            android:drawableLeft="@drawable/icon_filter"
+            android:theme="@style/ThemeOverlay.Material3.Button.ElevatedButton" />
+
+
+        <Button
+            android:id="@+id/btn_sort"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/txt_sirala"
+            android:textColor="@color/black"
+            android:paddingHorizontal="40dp"
+            android:textSize="18sp"
+            android:layout_marginHorizontal="3dp"
+            android:drawableLeft="@drawable/icon_sort"
+            android:theme="@style/ThemeOverlay.Material3.Button.ElevatedButton" />
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/popup_sort"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/dark_grey"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/ll_buttons"
+        android:layout_marginEnd="20dp"
+        app:cardCornerRadius="12dp"
+        android:translationZ="1dp"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_siralama"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sıralama"
+                    android:textColor="@color/light"
+                    android:textSize="16sp"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_sort"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:tint="@color/light"
+                    android:layout_marginEnd="20dp" />
+            </LinearLayout>
+
+
+
+            <View
+                android:id="@+id/view_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/background"
+                android:layout_marginVertical="8dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_siralama"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+
+            <LinearLayout
+                android:id="@+id/option_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="2dp"
+                android:paddingVertical="8dp"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_check_default"
+                    android:layout_width="16dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_check_24"
+                    app:tint="@color/light_grey"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Varsayılan"
+                    android:textSize="14sp"
+                    android:layout_marginStart="2dp"
+                    android:textColor="@color/light_grey"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/option_high_to_low"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="2dp"
+                android:paddingVertical="8dp"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_check_high_to_low"
+                    android:layout_width="16dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_check_24"
+                    app:tint="@color/light_grey"
+                    android:visibility="invisible"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="En Yüksekten Düşüğe"
+                    android:textSize="14sp"
+                    android:layout_marginStart="2dp"
+                    android:textColor="@color/light_grey"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/option_low_to_high"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="2dp"
+                android:paddingVertical="8dp"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_check_low_to_high"
+                    android:layout_width="16dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_check_24"
+                    app:tint="@color/light_grey"
+                    android:visibility="invisible"/>
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="En Düşükten Yükseğe"
+                    android:textSize="14sp"
+                    android:layout_marginStart="2dp"
+                    android:textColor="@color/light_grey"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/option_new_to_old"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="2dp"
+                android:paddingVertical="8dp"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_check_new_to_old"
+                    android:layout_width="16dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_check_24"
+                    app:tint="@color/light_grey"
+                    android:visibility="invisible"
+                    />
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yeniden Eskiye"
+                    android:textSize="14sp"
+                    android:layout_marginStart="2dp"
+                    android:textColor="@color/light_grey"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/option_old_to_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="2dp"
+                android:paddingVertical="8dp"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_check_old_to_new"
+                    android:layout_width="16dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_check_24"
+                    app:tint="@color/light_grey"
+                    android:visibility="invisible"/>
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Eskiden yeniye"
+                    android:textSize="14sp"
+                    android:layout_marginStart="2dp"
+                    android:textColor="@color/light_grey"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/rl_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#800F0F0F"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/wheel" />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_below="@id/ll_buttons"/>
+
+</RelativeLayout>

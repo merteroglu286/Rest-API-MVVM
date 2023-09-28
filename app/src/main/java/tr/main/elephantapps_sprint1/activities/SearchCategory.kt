@@ -2,7 +2,9 @@ package tr.main.elephantapps_sprint1.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
@@ -15,6 +17,8 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.gson.Gson
+import tr.main.elephantapps_sprint1.Constants.Constans
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.adapter.SearchCategoryAdapter
 import tr.main.elephantapps_sprint1.adapter.SearchCategoryAllAdapter
@@ -22,6 +26,7 @@ import tr.main.elephantapps_sprint1.databinding.ActivitySearchCategoryBinding
 import tr.main.elephantapps_sprint1.model.request.AddProduct.AdditionalInfoModel
 import tr.main.elephantapps_sprint1.model.request.CategoryFilterModel
 import tr.main.elephantapps_sprint1.model.request.AddProduct.ProductAddModel
+import tr.main.elephantapps_sprint1.model.request.SearchModel
 import tr.main.elephantapps_sprint1.model.response.Category.Data
 import tr.main.elephantapps_sprint1.model.response.Category.SubCategory
 import tr.main.elephantapps_sprint1.model.response.Category.SubCategoryX
@@ -43,6 +48,9 @@ class SearchCategory : BaseActivity() {
     private var receivedProduct : ProductAddModel? = null
     private var additionalInfo : AdditionalInfoModel? = null
 
+    private lateinit var fromWhichActivity : String
+    private lateinit var sharedPreferences : SharedPreferences
+
     companion object {
         @SuppressLint("StaticFieldLeak")
         lateinit var searchCategoryActivity: Activity
@@ -61,7 +69,9 @@ class SearchCategory : BaseActivity() {
         receivedProduct = intent.getParcelableExtra("product") as? ProductAddModel
         additionalInfo = intent.getParcelableExtra("additionalInfo") as? AdditionalInfoModel
 
-        println(receivedProduct)
+        fromWhichActivity = intent.getStringExtra(Constans.FROM_WHICH_ACTIVITY) as String
+        sharedPreferences = this.getSharedPreferences(Constans.FILTER_SHARED_PREFERENCE, Context.MODE_PRIVATE)
+
         getData()
 
         searchCategoryActivity = this
@@ -86,6 +96,24 @@ class SearchCategory : BaseActivity() {
         })
 
 
+
+    }
+
+    private fun setSharedPreferences(categoryId: Int){
+
+        val gson = Gson()
+
+        val json = sharedPreferences.getString("SearchModel", "")
+
+        val searchModel = gson.fromJson(json, SearchModel::class.java)
+
+        searchModel.categoryId = categoryId
+
+        val updatedJson = gson.toJson(searchModel)
+
+        val editor = sharedPreferences.edit()
+        editor.putString("SearchModel", updatedJson)
+        editor.apply()
 
     }
 
@@ -197,6 +225,7 @@ class SearchCategory : BaseActivity() {
                     intent.putExtra("itemName",data.name)
                     intent.putExtra("product",receivedProduct)
                     intent.putExtra("additionalInfo",additionalInfo)
+                    intent.putExtra(Constans.FROM_WHICH_ACTIVITY,Constans.FROM_FILTER)
                     startActivity(intent)
                     overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                     break
@@ -209,38 +238,53 @@ class SearchCategory : BaseActivity() {
                         intent.putExtra("subName",subCategory.name)
                         intent.putExtra("product",receivedProduct)
                         intent.putExtra("additionalInfo",additionalInfo)
+                        intent.putExtra(Constans.FROM_WHICH_ACTIVITY,Constans.FROM_FILTER)
                         startActivity(intent)
                         overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                         break
 
                     }else{
                         if(subCategory.name == name){
-                            receivedProduct?.categoryId = subCategory.id
-                            additionalInfo?.categoryName = subCategory.name
-                            AddProduct.addProductActivity.finish()
-                            val intent = Intent(this@SearchCategory, AddProduct::class.java)
-                            intent.putExtra("product",receivedProduct)
-                            intent.putExtra("additionalInfo",additionalInfo)
-                            startActivity(intent)
-                            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-                            finish()
-                            break
+                            if (fromWhichActivity == Constans.FROM_FILTER){
+                                setSharedPreferences(data.id)
+                                finish()
+                                overridePendingTransition(R.anim.activity_left_to_right, R.anim.activity_right_to_left)
+                            }else{
+                                receivedProduct?.categoryId = subCategory.id
+                                additionalInfo?.categoryName = subCategory.name
+                                AddProduct.addProductActivity.finish()
+                                val intent = Intent(this@SearchCategory, AddProduct::class.java)
+                                intent.putExtra("product",receivedProduct)
+                                intent.putExtra("additionalInfo",additionalInfo)
+                                startActivity(intent)
+                                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                                finish()
+                                break
+                            }
+
                         }
                     }
 
                     for (subCategoryX in subCategory.subCategories) {
 
                         if (subCategoryX.name == name){
-                            receivedProduct?.categoryId = subCategoryX.id
-                            additionalInfo?.categoryName = subCategoryX.name
-                            AddProduct.addProductActivity.finish()
-                            val intent = Intent(this@SearchCategory,AddProduct::class.java)
-                            intent.putExtra("product",receivedProduct)
-                            intent.putExtra("additionalInfo",additionalInfo)
-                            startActivity(intent)
-                            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-                            finish()
-                            break
+                            if (fromWhichActivity == Constans.FROM_FILTER){
+                                setSharedPreferences(data.id)
+                                finish()
+                                overridePendingTransition(R.anim.activity_left_to_right, R.anim.activity_right_to_left)
+                            }else{
+                                receivedProduct?.categoryId = subCategoryX.id
+                                additionalInfo?.categoryName = subCategoryX.name
+                                AddProduct.addProductActivity.finish()
+                                val intent = Intent(this@SearchCategory,AddProduct::class.java)
+                                intent.putExtra("product",receivedProduct)
+                                intent.putExtra("additionalInfo",additionalInfo)
+                                startActivity(intent)
+                                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                                finish()
+                                break
+                            }
+
                         }
 
                     }
@@ -257,6 +301,7 @@ class SearchCategory : BaseActivity() {
             intent.putExtra("product",receivedProduct)
             intent.putExtra("additionalInfo",additionalInfo)
             intent.putExtra("itemName",data.name)
+            intent.putExtra(Constans.FROM_WHICH_ACTIVITY,Constans.FROM_FILTER)
             startActivity(intent)
             overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
         }

@@ -1,10 +1,6 @@
 package tr.main.elephantapps_sprint1.activities
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.util.AttributeSet
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
@@ -12,15 +8,16 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.adapter.BrandResultAdapter
 import tr.main.elephantapps_sprint1.adapter.CategoryResultAdapter
+import tr.main.elephantapps_sprint1.adapter.CategoryResultAdapterr
 import tr.main.elephantapps_sprint1.adapter.GarageResultAdapter
 import tr.main.elephantapps_sprint1.adapter.PopularSearchAdapter
 import tr.main.elephantapps_sprint1.adapter.ProductResultAdapter
 import tr.main.elephantapps_sprint1.databinding.ActivitySearchBinding
 import tr.main.elephantapps_sprint1.model.request.HomeSearchRequestModel
 import tr.main.elephantapps_sprint1.model.request.PagingParameters
+import tr.main.elephantapps_sprint1.model.request.SearchModel
 import tr.main.elephantapps_sprint1.model.response.Home.PopularSearch
 import tr.main.elephantapps_sprint1.model.response.Search.Brand
 import tr.main.elephantapps_sprint1.model.response.Search.Category
@@ -43,13 +40,13 @@ class SearchActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         binding = ActivitySearchBinding.inflate(layoutInflater)
-
 
         setContentView(binding.root)
 
         binding.searchView.requestFocus()
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.searchView, InputMethodManager.SHOW_IMPLICIT)
 
         binding.searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -65,13 +62,8 @@ class SearchActivity : BaseActivity() {
 
         binding.ivBack.setOnClickListener{
             onBackPressed()
-            overridePendingTransition(R.anim.activity_left_to_right, R.anim.activity_right_to_left)
         }
 
-        binding.btnCreateRequest.setOnClickListener {
-            startActivity(Intent(this@SearchActivity,AddProduct::class.java))
-            overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
-        }
         getHomeAllData()
 
 
@@ -81,14 +73,11 @@ class SearchActivity : BaseActivity() {
         val viewModel = ViewModelProvider(this).get(HomeSearchViewModel::class.java)
 
         if (newText != ""){
-            val homeSearchRequestModel = HomeSearchRequestModel(
-                "Approved",
-                PagingParameters(1,50),
-                "OnSale",
-                newText!!
+            val searchModel = SearchModel(
+                pagingParameters = PagingParameters(pageSize = 50, pageNumber = 1),
+                searchText = newText
             )
-
-            viewModel.getDataFromAPI(homeSearchRequestModel)
+            viewModel.getDataFromAPI(searchModel)
 
             viewModel.successLiveData.observe(this, Observer {success ->
                 this.success = success
@@ -119,39 +108,10 @@ class SearchActivity : BaseActivity() {
                     model.data?.products?.let { productList.addAll(it) }
 
 
-                    if (categoryList.isEmpty() && brandList.isEmpty() && garageList.isEmpty() && productList.isEmpty()){
-                        binding.llEmptySearch.visibility = View.VISIBLE
-                        binding.rvPopularSearch.visibility = View.GONE
-                        binding.nested.visibility = View.GONE
-                        binding.txt.visibility = View.GONE
-                    }else{
-                        binding.nested.visibility = View.VISIBLE
-                        binding.llEmptySearch.visibility = View.GONE
-                        binding.txt.visibility = View.VISIBLE
-                        if(categoryList.isNotEmpty()){
-                            val categoryAdapter = CategoryResultAdapter(categoryList)
-                            binding.rvCategoryResult.layoutManager = GridLayoutManager(this,1)
-                            binding.rvCategoryResult.adapter = categoryAdapter
-                        }
-
-                        if (brandList.isNotEmpty()){
-                            val brandAdapter = BrandResultAdapter(brandList)
-                            binding.rvBrandResult.layoutManager = GridLayoutManager(this,1)
-                            binding.rvBrandResult.adapter = brandAdapter
-                        }
-
-                        if (garageList.isNotEmpty()){
-                            val garageAdapter = GarageResultAdapter(garageList)
-                            binding.rvGarageResult.layoutManager = GridLayoutManager(this,1)
-                            binding.rvGarageResult.adapter = garageAdapter
-                        }
-                        if (productList.isNotEmpty()){
-                            val productAdapter = ProductResultAdapter(productList)
-                            binding.rvProductResult.layoutManager = GridLayoutManager(this,3)
-                            binding.rvProductResult.adapter = productAdapter
-                        }
-                    }
-
+                   println("categoryList : " +categoryList)
+                   println("brandList : " +brandList)
+                   println("garageList : " +garageList)
+                   println("productList : " +productList)
 
                 }
             })
@@ -184,6 +144,7 @@ class SearchActivity : BaseActivity() {
 
         viewModel.homeAllLiveData.observe(this , Observer { model->
             if (success){
+
                 popularSearchList.clear()
                 popularSearchList.addAll(model.data.popularSearch)
 

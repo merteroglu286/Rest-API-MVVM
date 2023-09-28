@@ -1,14 +1,17 @@
 package tr.main.elephantapps_sprint1.adapter
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tr.main.elephantapps_sprint1.R
+import tr.main.elephantapps_sprint1.activities.FilterProduct
 import tr.main.elephantapps_sprint1.databinding.CategoryItemLayoutBinding
 import tr.main.elephantapps_sprint1.model.response.Home.Category
 
-class CategoryAdapter(private val categories: ArrayList<Category>
+class CategoryAdapter(private val categories: ArrayList<Category>,private val activity:Activity
 ) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
@@ -34,6 +37,13 @@ class CategoryAdapter(private val categories: ArrayList<Category>
             3 -> holder.image.setImageResource(R.drawable.alet)
             4 -> holder.image.setImageResource(R.drawable.tshirt)
             5 -> holder.image.setImageResource(R.drawable.music)
+        }
+
+        holder.itemView.setOnClickListener{
+            val intent = Intent(context,FilterProduct::class.java)
+            intent.putExtra("categoryId",category.id)
+            context.startActivity(intent)
+            activity.overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
         }
 
 

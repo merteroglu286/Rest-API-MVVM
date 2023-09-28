@@ -22,7 +22,9 @@ class ForgotPasswordViewModel:ViewModel() {
         AppRepo.callApiForSendVerificationCode(email
         ) { success, message ->
             successLiveData.value = success
-            errorLiveData.value = message
+            if (!success){
+                errorLiveData.value = message
+            }
         }
     }
 

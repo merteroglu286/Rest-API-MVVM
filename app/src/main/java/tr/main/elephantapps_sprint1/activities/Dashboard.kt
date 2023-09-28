@@ -6,16 +6,16 @@ import android.view.View.OnClickListener
 import androidx.fragment.app.Fragment
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.databinding.ActivityDashboardBinding
-import tr.main.elephantapps_sprint1.fragments.Homepage
-import tr.main.elephantapps_sprint1.fragments.Messages
-import tr.main.elephantapps_sprint1.fragments.MyBasket
-import tr.main.elephantapps_sprint1.fragments.MyGarage
-import tr.main.elephantapps_sprint1.fragments.Profile
+import tr.main.elephantapps_sprint1.fragments.Dashboard.Homepage.Homepage
+import tr.main.elephantapps_sprint1.fragments.Dashboard.Messages
+import tr.main.elephantapps_sprint1.fragments.Dashboard.MyBasket
+import tr.main.elephantapps_sprint1.fragments.Dashboard.MyGarage
+import tr.main.elephantapps_sprint1.fragments.Dashboard.Profile
 
 class Dashboard : BaseActivity(), OnClickListener {
 
     private lateinit var binding: ActivityDashboardBinding
-    private var selectedContainerId = tr.main.elephantapps_sprint1.R.id.container_homepage
+    private var selectedContainerId = R.id.container_homepage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,11 +57,11 @@ class Dashboard : BaseActivity(), OnClickListener {
 
     override fun onClick(v: View?) {
         val fragment: Fragment = when (v?.id) {
-            tr.main.elephantapps_sprint1.R.id.container_homepage -> Homepage()
-            tr.main.elephantapps_sprint1.R.id.container_messages -> Messages()
-            tr.main.elephantapps_sprint1.R.id.container_my_garage -> MyGarage()
-            tr.main.elephantapps_sprint1.R.id.container_my_masket -> MyBasket()
-            tr.main.elephantapps_sprint1.R.id.container_profile -> Profile()
+            R.id.container_homepage -> Homepage()
+            R.id.container_messages -> Messages()
+            R.id.container_my_garage -> MyGarage()
+            R.id.container_my_masket -> MyBasket()
+            R.id.container_profile -> Profile()
             else -> return
         }
 

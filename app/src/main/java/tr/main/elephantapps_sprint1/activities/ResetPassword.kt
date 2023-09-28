@@ -1,35 +1,34 @@
 package tr.main.elephantapps_sprint1.activities
 
-import android.app.Dialog
+import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.View
+import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.databinding.ActivityResetPasswordBinding
+import tr.main.elephantapps_sprint1.enums.ToastType
 import tr.main.elephantapps_sprint1.model.request.PasswordResetModel
 import tr.main.elephantapps_sprint1.util.Utils
-import tr.main.elephantapps_sprint1.viewmodel.ForgotPasswordViewModel
 import tr.main.elephantapps_sprint1.viewmodel.PasswordResetViewModel
 
 class ResetPassword : BaseActivity() {
     private lateinit var binding : ActivityResetPasswordBinding
     private lateinit var email: String
     private lateinit var code: String
-    private lateinit var customProgressDialog: Dialog
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityResetPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        customProgressDialog = Dialog(this)
-        customProgressDialog.setContentView(R.layout.dialog_custom_progress)
-        customProgressDialog.setCanceledOnTouchOutside(false);
-        customProgressDialog.setCancelable(false)
 
         setSupportActionBar(binding.toolbarResetPassword)
 
@@ -38,37 +37,44 @@ class ResetPassword : BaseActivity() {
             supportActionBar!!.setDisplayShowTitleEnabled(false)
         }
         binding.toolbarResetPassword.setNavigationOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
             overridePendingTransition(R.anim.activity_left_to_right, R.anim.activity_right_to_left)
         }
 
         binding.toolbarResetPassword.setNavigationIcon(R.drawable.baseline_arrow_back_ios_24)
 
         binding.txtGiveUp.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
+            overridePendingTransition(R.anim.activity_left_to_right, R.anim.activity_right_to_left)
         }
 
         email = intent.getStringExtra("email").toString()
         code = intent.getStringExtra("code").toString()
 
         binding.btnSend.setOnClickListener {
-
-            if(binding.etPassword.text.toString()  == binding.etPasswordAgain.text.toString()){
+            showProgress()
+            if(checkValues()){
                 changePassword()
-            }else{
-                Toast.makeText(this@ResetPassword,"Parolalar eşleşmiyor.",Toast.LENGTH_LONG).show()
             }
         }
 
+        binding.container.setOnTouchListener { _, event ->
+            if (event?.action == MotionEvent.ACTION_DOWN) {
+                hideKeyboard()
+            }
+            false
+        }
+    }
 
+    private fun hideKeyboard() {
+        val imm = getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     private fun changePassword(){
-        customProgressDialog.show()
-        val viewModel = ViewModelProvider(this).get(PasswordResetViewModel::class.java)
+        val viewModel = ViewModelProvider(this)[PasswordResetViewModel::class.java]
 
-
-        var passwordResetMode = PasswordResetModel(
+        val passwordResetMode = PasswordResetModel(
             email,
             code,
             binding.etPassword.text.toString()
@@ -76,24 +82,50 @@ class ResetPassword : BaseActivity() {
 
         viewModel.callApiForPasswordReset(passwordResetMode)
 
-        viewModel.successLiveData.observe(this, Observer { success ->
-            customProgressDialog.dismiss()
+        viewModel.successLiveData.observe(this) { success ->
             if (success == true) {
-                val intent = Intent(this@ResetPassword,LoginAndSignin::class.java)
-                intent.putExtra("finished",1)
+                hideProgress()
+                Utils.showToast(this@ResetPassword, "Parola başarıyla değiştirildi", Toast.LENGTH_SHORT, ToastType.Green)
+                val intent = Intent(this@ResetPassword, LoginAndSignin::class.java)
+                intent.putExtra("finished", 1)
                 startActivity(intent)
                 overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                 finish()
             }
-        })
+        }
 
-        viewModel.errorLiveData.observe(this,Observer{message->
-            customProgressDialog.dismiss()
-            if (message != ""){
-                Toast.makeText(this@ResetPassword,message,Toast.LENGTH_LONG).show()
-            }
+        viewModel.errorLiveData.observe(this) { message ->
+            hideProgress()
+            Utils.showToast(this@ResetPassword, message, Toast.LENGTH_SHORT, ToastType.Red)
 
-        })
+        }
     }
 
+    private fun checkValues(): Boolean {
+        return if (
+            binding.etPassword.text.isNullOrEmpty() ||
+            binding.etPasswordAgain.text.isNullOrEmpty() ||
+            binding.etPassword.text.toString()  != binding.etPasswordAgain.text.toString()
+        ){
+            hideProgress()
+            Utils.showToast(this@ResetPassword,"Lütfen parolanızı doğru giriniz",Toast.LENGTH_SHORT,ToastType.Yellow)
+            false
+        }else{
+            true
+        }
+    }
+
+    private fun showProgress(){
+        binding.rlProgress.visibility = View.VISIBLE
+
+        val rotateAnimation =
+            AnimationUtils.loadAnimation(this@ResetPassword, R.anim.rotate_anim)
+
+        binding.ivProgress.startAnimation(rotateAnimation)
+    }
+
+    private fun hideProgress(){
+        binding.rlProgress.visibility = View.GONE
+        binding.ivProgress.clearAnimation()
+    }
 }

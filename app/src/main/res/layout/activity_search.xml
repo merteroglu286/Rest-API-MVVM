@@ -51,44 +51,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_empty_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_below="@id/ll_search_bar"
-        android:visibility="gone"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:visibility="visible"
-            android:text="Ne yazık ki aramızla eşleşen ürün bulamadık.\nTalep oluşturun ve ekibimiz sizin için talebinizi incelesin."
-            android:textAlignment="center"
-            android:textSize="12sp"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/light_grey"
-            android:layout_marginTop="28dp"
-            />
-
-        <Button
-            android:id="@+id/btn_create_request"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:text="Talep Oluştur"
-            android:layout_marginTop="24dp"
-            android:layout_centerHorizontal="true"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:theme="@style/ThemeOverlay.Material3.Button.ElevatedButton"
-
-            />
-    </LinearLayout>
-
-
     <TextView
         android:id="@+id/txt"
         android:layout_width="wrap_content"

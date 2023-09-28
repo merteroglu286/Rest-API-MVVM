@@ -1,6 +1,8 @@
 package tr.main.elephantapps_sprint1.activities
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
@@ -12,12 +14,15 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.gson.Gson
+import tr.main.elephantapps_sprint1.Constants.Constans
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.adapter.SubCategoryXAdapter
 import tr.main.elephantapps_sprint1.databinding.ActivitySearchSubCategoryXBinding
 import tr.main.elephantapps_sprint1.model.request.AddProduct.AdditionalInfoModel
 import tr.main.elephantapps_sprint1.model.request.CategoryFilterModel
 import tr.main.elephantapps_sprint1.model.request.AddProduct.ProductAddModel
+import tr.main.elephantapps_sprint1.model.request.SearchModel
 import tr.main.elephantapps_sprint1.model.response.Category.Data
 import tr.main.elephantapps_sprint1.model.response.Category.SubCategoryX
 import tr.main.elephantapps_sprint1.viewmodel.CategoriesViewModel
@@ -35,6 +40,9 @@ class SearchSubCategoryX : BaseActivity() {
     private var receivedProduct : ProductAddModel? = null
     private var additionalInfo : AdditionalInfoModel? = null
 
+    private lateinit var fromWhichActivity : String
+    private lateinit var sharedPreferences : SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchSubCategoryXBinding.inflate(layoutInflater)
@@ -47,6 +55,9 @@ class SearchSubCategoryX : BaseActivity() {
 
         receivedProduct = intent.getParcelableExtra("product") as? ProductAddModel
         additionalInfo = intent.getParcelableExtra("additionalInfo") as? AdditionalInfoModel
+
+        fromWhichActivity = intent.getStringExtra(Constans.FROM_WHICH_ACTIVITY) as String
+        sharedPreferences = this.getSharedPreferences(Constans.FILTER_SHARED_PREFERENCE, Context.MODE_PRIVATE)
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -62,6 +73,24 @@ class SearchSubCategoryX : BaseActivity() {
     }
 
 
+
+    private fun setSharedPreferences(categoryId: Int){
+
+        val gson = Gson()
+
+        val json = sharedPreferences.getString("SearchModel", "")
+
+        val searchModel = gson.fromJson(json, SearchModel::class.java)
+
+        searchModel.categoryId = categoryId
+
+        val updatedJson = gson.toJson(searchModel)
+
+        val editor = sharedPreferences.edit()
+        editor.putString("SearchModel", updatedJson)
+        editor.apply()
+
+    }
 
 
     private fun createToolbar(){
@@ -169,17 +198,26 @@ class SearchSubCategoryX : BaseActivity() {
                 }
 
                 subCategoryXAdapter = SubCategoryXAdapter(subCategoryXList) { data ->
-                    receivedProduct?.categoryId = data.id
-                    additionalInfo?.categoryName = data.name
-                    SearchCategory.searchCategoryActivity.finish()
-                    SearchSubCategory.searchSubCategoryActivity.finish()
-                    AddProduct.addProductActivity.finish()
-                    val intent = Intent(this@SearchSubCategoryX, AddProduct::class.java)
-                    intent.putExtra("product",receivedProduct)
-                    intent.putExtra("additionalInfo",additionalInfo)
-                    startActivity(intent)
-                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-                    finish()
+                    if (fromWhichActivity == Constans.FROM_FILTER){
+                        setSharedPreferences(data.id)
+                        SearchCategory.searchCategoryActivity.finish()
+                        SearchSubCategory.searchSubCategoryActivity.finish()
+                        finish()
+                        overridePendingTransition(R.anim.activity_left_to_right, R.anim.activity_right_to_left)
+                    }else{
+                        receivedProduct?.categoryId = data.id
+                        additionalInfo?.categoryName = data.name
+                        SearchCategory.searchCategoryActivity.finish()
+                        SearchSubCategory.searchSubCategoryActivity.finish()
+                        AddProduct.addProductActivity.finish()
+                        val intent = Intent(this@SearchSubCategoryX, AddProduct::class.java)
+                        intent.putExtra("product",receivedProduct)
+                        intent.putExtra("additionalInfo",additionalInfo)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                        finish()
+                    }
+
                 }
 
                 binding.rvSubcategories.layoutManager = GridLayoutManager(this, 3)

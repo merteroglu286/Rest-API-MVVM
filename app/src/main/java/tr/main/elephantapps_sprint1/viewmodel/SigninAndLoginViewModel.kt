@@ -2,11 +2,9 @@ package tr.main.elephantapps_sprint1.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
 import tr.main.elephantapps_sprint1.repository.AppRepo
-import tr.main.elephantapps_sprint1.model.request.UserLoginModel
+import tr.main.elephantapps_sprint1.model.request.Authentication.UserLoginModel
 import tr.main.elephantapps_sprint1.model.request.UserModel
 import tr.main.elephantapps_sprint1.model.response.LoginResponseModel
 
@@ -26,16 +24,24 @@ class SigninAndLoginViewModel:ViewModel() {
         AppRepo.callApiForSignin(userModel
         ) { success, message ->
             successSigninLiveData.value = success
-            errorSigninLiveData.value = message
+            if (!success){
+                errorSigninLiveData.value = message
+            }
         }
     }
 
-    fun getStatusCodeForLogin(userLoginModel:UserLoginModel) {
+    fun getStatusCodeForLogin(userLoginModel: UserLoginModel) {
 
         AppRepo.callApiForLogin(userLoginModel) { data,success,message ->
-            loginResponseModelLiveData.value = data
             successLoginLiveData.value = success
-            errorLoginLiveData.value = message
+
+            if (success){
+                loginResponseModelLiveData.value = data
+            }
+            if (!success){
+                errorLoginLiveData.value = message
+            }
+
         }
     }
 
@@ -43,7 +49,9 @@ class SigninAndLoginViewModel:ViewModel() {
 
         AppRepo.callApiForLoginWithGoogle(socialAuthenticationModel) { success,message ->
             successLoginWithGoogleLiveData.value = success
-            errorLoginWithGoogleLiveData.value = message
+            if (!success){
+                errorLoginWithGoogleLiveData.value = message
+            }
         }
     }
 }

@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.MailVerification"
     android:background="@color/background"
+    android:id="@+id/container"
     >
 
     
@@ -105,13 +106,30 @@
         android:layout_marginTop="24dp"
         android:layout_centerHorizontal="true"
         android:textSize="18sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
+        android:textColor="@color/background"
+        android:paddingVertical="10dp"
         android:layout_below="@id/txt_time"
         android:theme="@style/ThemeOverlay.Material3.Button.ElevatedButton"
         />
 
+    <RelativeLayout
+        android:id="@+id/rl_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#800F0F0F"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:translationZ="1dp">
 
+        <ImageView
+            android:id="@+id/iv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/wheel"
+            app:tint="@color/light"/>
+    </RelativeLayout>
+<!--
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -135,5 +153,5 @@
             android:textSize="16sp"
             android:layout_marginTop="12dp"/>
     </LinearLayout>
-
+-->
 </RelativeLayout>

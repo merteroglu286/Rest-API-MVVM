@@ -2,7 +2,9 @@ package tr.main.elephantapps_sprint1.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
@@ -13,12 +15,15 @@ import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.gson.Gson
+import tr.main.elephantapps_sprint1.Constants.Constans
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.adapter.SubCategoriesAdapter
 import tr.main.elephantapps_sprint1.databinding.ActivitySearchSubCategoryBinding
 import tr.main.elephantapps_sprint1.model.request.AddProduct.AdditionalInfoModel
 import tr.main.elephantapps_sprint1.model.request.CategoryFilterModel
 import tr.main.elephantapps_sprint1.model.request.AddProduct.ProductAddModel
+import tr.main.elephantapps_sprint1.model.request.SearchModel
 import tr.main.elephantapps_sprint1.model.response.Category.Data
 import tr.main.elephantapps_sprint1.model.response.Category.SubCategory
 import tr.main.elephantapps_sprint1.viewmodel.CategoriesViewModel
@@ -34,6 +39,10 @@ class SearchSubCategory : BaseActivity() {
 
     private var receivedProduct : ProductAddModel? = null
     private var additionalInfo : AdditionalInfoModel? = null
+
+    private lateinit var fromWhichActivity : String
+    private lateinit var sharedPreferences : SharedPreferences
+
     companion object {
         @SuppressLint("StaticFieldLeak")
         lateinit var searchSubCategoryActivity: Activity
@@ -47,6 +56,9 @@ class SearchSubCategory : BaseActivity() {
 
         receivedProduct = intent.getParcelableExtra("product") as? ProductAddModel
         additionalInfo = intent.getParcelableExtra("additionalInfo") as? AdditionalInfoModel
+
+        fromWhichActivity = intent.getStringExtra(Constans.FROM_WHICH_ACTIVITY) as String
+        sharedPreferences = this.getSharedPreferences(Constans.FILTER_SHARED_PREFERENCE, Context.MODE_PRIVATE)
 
         createToolbar()
         getsubCategoryList()
@@ -113,6 +125,24 @@ class SearchSubCategory : BaseActivity() {
         }
     }
 
+    private fun setSharedPreferences(categoryId: Int){
+
+        val gson = Gson()
+
+        val json = sharedPreferences.getString("SearchModel", "")
+
+        val searchModel = gson.fromJson(json, SearchModel::class.java)
+
+        searchModel.categoryId = categoryId
+
+        val updatedJson = gson.toJson(searchModel)
+
+        val editor = sharedPreferences.edit()
+        editor.putString("SearchModel", updatedJson)
+        editor.apply()
+
+    }
+
     private fun getsubCategoryList(){
         val viewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
 
@@ -141,34 +171,34 @@ class SearchSubCategory : BaseActivity() {
                 subCategoriesAdapter = SubCategoriesAdapter(subCategoryList) { data ->
 
                     if (data.subCategories.isEmpty()){
-                        receivedProduct?.categoryId = data.id
-                        additionalInfo?.categoryName = data.name
-                        AddProduct.addProductActivity.finish()
-                        SearchCategory.searchCategoryActivity.finish()
-                        val intent = Intent(this@SearchSubCategory,AddProduct::class.java)
-                        intent.putExtra("product",receivedProduct)
-                        intent.putExtra("additionalInfo",additionalInfo)
-                        startActivity(intent)
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-                        finish()
+                        if (fromWhichActivity == Constans.FROM_FILTER){
+                            setSharedPreferences(data.id)
+                            SearchCategory.searchCategoryActivity.finish()
+                            finish()
+                            overridePendingTransition(R.anim.activity_left_to_right, R.anim.activity_right_to_left)
+                        }else{
+                            receivedProduct?.categoryId = data.id
+                            additionalInfo?.categoryName = data.name
+                            AddProduct.addProductActivity.finish()
+                            SearchCategory.searchCategoryActivity.finish()
+                            val intent = Intent(this@SearchSubCategory,AddProduct::class.java)
+                            intent.putExtra("product",receivedProduct)
+                            intent.putExtra("additionalInfo",additionalInfo)
+                            startActivity(intent)
+                            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                            finish()
+                        }
+
                     }else{
                         val intent = Intent(this@SearchSubCategory,SearchSubCategoryX::class.java)
                         intent.putExtra("subName",data.name)
                         intent.putExtra("product",receivedProduct)
                         intent.putExtra("additionalInfo",additionalInfo)
+                        intent.putExtra(Constans.FROM_WHICH_ACTIVITY,Constans.FROM_FILTER)
                         startActivity(intent)
                         overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                     }
 
-                    // parent.name verisine asagıdan ulasabilirsin
-                    /*
-                    for (x in categoryList){
-                        if (x.id == data.parentId){
-                            println(x.name + " - " + data.name)
-                        }
-                    }
-
-                     */
                 }
                 binding.rvSubcategories.layoutManager = GridLayoutManager(this,3)
                 binding.rvSubcategories.adapter = subCategoriesAdapter

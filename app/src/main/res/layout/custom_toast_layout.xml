@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/yellow_border_for_toast"
+    android:padding="12dp"
+    android:layout_gravity="center_horizontal"
+    android:id="@+id/custom_toast_container"
+    android:layout_marginVertical="24dp"
+    android:layout_marginHorizontal="24dp">
+
+    <ImageView
+        android:id="@+id/iv_toast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/tv_toast_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lutfen_bilgilerinizi_giriniz"
+        android:textColor="@color/light"
+        android:textSize="14sp"
+        android:layout_marginStart="12dp"/>
+</LinearLayout>

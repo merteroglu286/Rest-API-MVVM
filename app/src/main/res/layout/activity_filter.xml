@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.Filter"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="18dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/btn_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/macos_close_30"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Filtreleme"
+            android:layout_weight="1"
+            android:textColor="@color/light"
+            android:textAlignment="center"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/txt_clear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Temizle"
+            android:textAlignment="textEnd"
+            android:textColor="@color/primary"
+            android:textSize="16sp"
+            android:paddingEnd="24dp"
+            />
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="24dp"
+        app:cardBackgroundColor="@color/light_black"
+        android:layout_below="@id/toolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp">
+
+            <TextView
+                android:id="@+id/tv_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/light"
+                android:text="Ek Bilgiler"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp"/>
+
+            <LinearLayout
+                android:id="@+id/ll_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="24dp"
+                android:layout_below="@id/tv_info"
+                android:background="@drawable/black_solid_outlined_bg">
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Kategori"
+                    android:layout_weight="1"
+                    android:textColor="@color/light"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light"
+                    android:textSize="16sp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_brand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_below="@id/ll_category"
+                android:background="@drawable/black_solid_outlined_bg">
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Marka"
+                    android:layout_weight="1"
+                    android:textColor="@color/light"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light"
+                    android:textSize="16sp"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/light"
+                android:text="Fiyat Aralığı"
+                android:textSize="14sp"
+                android:layout_below="@id/ll_brand"
+                android:layout_marginTop="16dp"/>
+
+            <LinearLayout
+                android:id="@+id/ll_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_below="@id/tv_price">
+
+
+                <EditText
+                    android:id="@+id/et_min_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="En az"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:background="@drawable/white_outlined_button_bg"
+                    android:textColorHint="@color/light_grey"
+                    android:textColor="@color/light"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="12dp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:layout_marginEnd="8dp"/>
+                <EditText
+                    android:id="@+id/et_max_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="En çok"
+                    android:textSize="16sp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/white_outlined_button_bg"
+                    android:textColorHint="@color/light_grey"
+                    android:textColor="@color/light"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="12dp"
+                    android:inputType="number"
+                    android:maxLines="1"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/light"
+                android:text="Durumu"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp"
+                android:layout_below="@id/ll_price"/>
+
+            <LinearLayout
+                android:id="@+id/ll_using_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="16dp"
+                android:layout_below="@id/tv_status"
+                android:background="@drawable/black_solid_outlined_bg">
+
+                <TextView
+                    android:id="@+id/tv_using_Status"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Kullanım Durumu"
+                    android:layout_weight="1"
+                    android:textColor="@color/light"
+                    android:textSize="16sp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/popup_using_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/background"
+                android:layout_below="@id/tv_status"
+                android:layout_marginTop="16dp"
+                android:translationZ="1dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/item_first"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Kullanım Durumu"
+                    android:textColor="@color/light"
+                    android:textSize="16sp"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="20dp"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dark_grey"/>
+
+                <TextView
+                    android:id="@+id/item_second"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sıfır Ürün"
+                    android:textColor="@color/light"
+                    android:textSize="16sp"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="20dp"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dark_grey"/>
+
+                <TextView
+                    android:id="@+id/item_third"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Kullanılmış Ürün"
+                    android:textColor="@color/light"
+                    android:textSize="16sp"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="20dp"
+                    />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:paddingHorizontal="36dp"
+                android:theme="@style/ThemeOverlay.Material3.Button.ElevatedButton"
+                android:layout_below="@id/ll_using_status"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

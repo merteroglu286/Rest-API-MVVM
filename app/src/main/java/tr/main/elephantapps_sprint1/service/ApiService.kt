@@ -11,18 +11,24 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 import tr.main.elephantapps_sprint1.Constants.Constans
 import tr.main.elephantapps_sprint1.model.request.AddProduct.ProductAddModel
 import tr.main.elephantapps_sprint1.model.request.CategoryFilterModel
+import tr.main.elephantapps_sprint1.model.request.Comment.CommentAddModel
+import tr.main.elephantapps_sprint1.model.request.GetProduct.ProductDetailSummaryResponseModel
+import tr.main.elephantapps_sprint1.model.request.GetProductByGarage.ProductSummaryResponseModel
 import tr.main.elephantapps_sprint1.model.request.HomeSearchRequestModel
 import tr.main.elephantapps_sprint1.model.request.PasswordResetModel
 import tr.main.elephantapps_sprint1.model.request.ProductRequestModel
+import tr.main.elephantapps_sprint1.model.request.SearchModel
 import tr.main.elephantapps_sprint1.model.request.SocialAuthenticationModel
-import tr.main.elephantapps_sprint1.model.request.UserLoginModel
+import tr.main.elephantapps_sprint1.model.request.Authentication.UserLoginModel
 import tr.main.elephantapps_sprint1.model.request.UserModel
 import tr.main.elephantapps_sprint1.model.request.VerifyCodeModel
 import tr.main.elephantapps_sprint1.model.response.Brand.BrandModel
 import tr.main.elephantapps_sprint1.model.response.Category.CategoriesResponseModel
+import tr.main.elephantapps_sprint1.model.response.Comment.ProductCommentsResponseModel
 import tr.main.elephantapps_sprint1.model.response.Home.HomeAllResponseModel
 import tr.main.elephantapps_sprint1.model.response.LoginResponseModel
 import tr.main.elephantapps_sprint1.model.response.ProductIdResponseModel
@@ -72,7 +78,7 @@ interface ApiService {
 
     @POST(Constans.EXT_HOME_SEARCH)
     fun getHomeSearch(
-        @Body homeSearchRequestModel: HomeSearchRequestModel,
+        @Body searchModel: SearchModel,
         @Header("ApiKey") apiKey: String): Call<SearchResultResponseModel>
 
     @POST(Constans.EXT_CATEGORY_GETCATEGORIES)
@@ -107,4 +113,34 @@ interface ApiService {
         @Header("Authorization") authorization: String
     ): Call<ResponseModel>
 
+    @POST(Constans.EXT_HOME_SEARCH)
+    fun getHomeSearchByCategoryId(
+        @Body searchModel: SearchModel,
+        @Header("ApiKey") apiKey: String): Call<SearchResultResponseModel>
+
+    @GET(Constans.EXT_PRODUCT_GET)
+    fun getProductById(
+        @Path("id") id: Int,
+        @Header("ApiKey") apiKey: String): Call<ProductDetailSummaryResponseModel>
+
+    @GET(Constans.EXT_PRODUCT_GET_BY_GARAGE)
+    fun getProductByGarageId(
+        @Path("garageId") id: Int,
+        @Header("ApiKey") apiKey: String): Call<ProductSummaryResponseModel>
+
+    @GET(Constans.EXT_PRODUCT_GET_BY_BRAND_ID)
+    fun getProductByBrandId(
+        @Path("brandId") id: Int,
+        @Header("ApiKey") apiKey: String): Call<ProductSummaryResponseModel>
+
+    @GET(Constans.EXT_COMMENT_GET_COMMENTS_OF_PRODUCT)
+    fun getCommentByProductId(
+        @Query("productId") id: Int,
+        @Header("ApiKey") apiKey: String): Call<ProductCommentsResponseModel>
+
+    @POST(Constans.EXT_COMMENT_POST)
+    fun postComment(
+        @Body commentAddModel: CommentAddModel,
+        @Header("ApiKey") apiKey: String,
+        @Header("Authorization") authorization: String): Call<ResponseModel>
 }

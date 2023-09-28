@@ -1,5 +1,7 @@
 package tr.main.elephantapps_sprint1.adapter
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,8 +9,10 @@ import com.bumptech.glide.Glide
 import tr.main.elephantapps_sprint1.databinding.FeaturedProductsItemLayoutBinding
 import tr.main.elephantapps_sprint1.model.response.Home.Product
 import tr.main.elephantapps_sprint1.Constants.Constans
+import tr.main.elephantapps_sprint1.R
+import tr.main.elephantapps_sprint1.activities.ProductDetail
 
-class FeaturedProductsAdapter(private val products: ArrayList<Product>
+class FeaturedProductsAdapter(private val products: ArrayList<Product>,private val activity: Activity
 ) :
     RecyclerView.Adapter<FeaturedProductsAdapter.ViewHolder>() {
 
@@ -31,6 +35,12 @@ class FeaturedProductsAdapter(private val products: ArrayList<Product>
 
         Glide.with(context).load(Constans.PRODUCT_PHOTOS_URL+product.photoUrl).into(holder.image)
 
+        holder.itemView.setOnClickListener{
+            val intent = Intent(activity, ProductDetail::class.java)
+            intent.putExtra("productId",product.id)
+            activity.startActivity(intent)
+            activity.overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
+        }
     }
 
     override fun getItemCount(): Int {

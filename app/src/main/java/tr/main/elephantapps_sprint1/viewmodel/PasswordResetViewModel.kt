@@ -14,7 +14,9 @@ class PasswordResetViewModel:ViewModel() {
         AppRepo.callApiForPasswordReset(passwordResetModel
         ) { success, message ->
             successLiveData.value = success
-            errorLiveData.value = message
+            if (!success){
+                errorLiveData.value = message
+            }
         }
     }
 }

@@ -5,6 +5,8 @@
 
     <color name="transparent">#00000000</color>
     <color name="primary">#E42E0E</color>
+    <color name="green">#64DD17</color>
+    <color name="yellow">#FFE70E</color>
     <color name="light_grey">#B5B5B5</color>
     <color name="dark_grey">#232326</color>
     <color name="light">#FFFFFF</color>

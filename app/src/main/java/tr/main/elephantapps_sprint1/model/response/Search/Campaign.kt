@@ -1,7 +1,7 @@
 package tr.main.elephantapps_sprint1.model.response.Search
 
 data class Campaign(
-    val discountRate: Int,
-    val discountedPrice: Int,
-    val normalPrice: Int
+    val discountRate: Double,
+    val discountedPrice: Double,
+    val normalPrice: Double
 )

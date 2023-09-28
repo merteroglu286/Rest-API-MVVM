@@ -1,0 +1,30 @@
+package tr.main.elephantapps_sprint1.model.request.GetProduct
+
+data class Data(
+    val approvalStatus: String,
+    val brand: Brand,
+    val campaign: Campaign,
+    val cartQuantity: Int,
+    val category: Category,
+    val code: String,
+    val comments: List<Comment>,
+    val description: String,
+    val dimension: Dimension,
+    val garage: Garage,
+    val garageProducts: List<GarageProduct>,
+    val id: Int,
+    val isFavorite: Boolean,
+    val isInCart: Boolean,
+    val isOffer: Boolean,
+    val isOpenToOffer: Boolean,
+    val price: Double,
+    val productCartInfo: ProductCartInfo,
+    val productPhotoUrls: List<String>,
+    val productStatus: String,
+    val productUrl: String,
+    val refuseReason: String,
+    val saleStatus: String,
+    val simularProducts: List<SimularProduct>,
+    val stock: Int,
+    val title: String
+)

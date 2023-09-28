@@ -1,6 +1,8 @@
 package tr.main.elephantapps_sprint1.activities
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
@@ -13,11 +15,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.gson.Gson
+import tr.main.elephantapps_sprint1.Constants.Constans
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.adapter.BrandsAdapter
 import tr.main.elephantapps_sprint1.databinding.ActivitySearchBrandsBinding
 import tr.main.elephantapps_sprint1.model.request.AddProduct.AdditionalInfoModel
 import tr.main.elephantapps_sprint1.model.request.AddProduct.ProductAddModel
+import tr.main.elephantapps_sprint1.model.request.SearchModel
 import tr.main.elephantapps_sprint1.model.response.Brand.Data
 import tr.main.elephantapps_sprint1.viewmodel.SearchBrandsViewModel
 import java.util.Locale
@@ -30,6 +35,11 @@ class SearchBrands : BaseActivity() {
     private lateinit var brandsAdapter : BrandsAdapter
     private var receivedProduct : ProductAddModel? = null
     private var additionalInfo : AdditionalInfoModel? = null
+    private var searchModel : SearchModel? = null
+
+    private lateinit var fromWhichActivity : String
+    private lateinit var sharedPreferences : SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,6 +49,11 @@ class SearchBrands : BaseActivity() {
 
         receivedProduct = intent.getParcelableExtra("product") as? ProductAddModel
         additionalInfo = intent.getParcelableExtra("additionalInfo") as? AdditionalInfoModel
+        searchModel = intent.getParcelableExtra("searchModel") as? SearchModel
+
+        fromWhichActivity = intent.getStringExtra(Constans.FROM_WHICH_ACTIVITY) as String
+
+        sharedPreferences = this.getSharedPreferences(Constans.FILTER_SHARED_PREFERENCE, Context.MODE_PRIVATE)
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -53,12 +68,29 @@ class SearchBrands : BaseActivity() {
         })
 
         println(receivedProduct)
-
+        println("brands activity çalıştı")
         createToolbar()
         getBrandList()
     }
 
 
+    private fun setSharedPreferences(brandId: Int){
+
+        val gson = Gson()
+
+        val json = sharedPreferences.getString("SearchModel", "")
+
+        val searchModel = gson.fromJson(json, SearchModel::class.java)
+
+        searchModel.brandId = brandId
+
+        val updatedJson = gson.toJson(searchModel)
+
+        val editor = sharedPreferences.edit()
+        editor.putString("SearchModel", updatedJson)
+        editor.apply()
+
+    }
     private fun filterList(query: String?) {
 
         if (query != null) {
@@ -83,11 +115,13 @@ class SearchBrands : BaseActivity() {
 
         viewModel.successLiveData.observe(this, Observer {success ->
             this.success = success
+            println(success.toString())
         })
 
         viewModel.errorLiveData.observe(this,Observer{message->
             if (message != ""){
                 Toast.makeText(this,message, Toast.LENGTH_LONG).show()
+                println(message)
             }
 
         })
@@ -100,20 +134,37 @@ class SearchBrands : BaseActivity() {
                 brandList.clear()
                 brandList.addAll(model.data)
 
-
                 brandsAdapter = BrandsAdapter(brandList) { data ->
-                    receivedProduct?.brandId = data.id
-                    additionalInfo?.brandName = data.name
-                    AddProduct.addProductActivity.finish()
-                    val intent = Intent(this@SearchBrands,AddProduct::class.java)
-                    intent.putExtra("product",receivedProduct)
-                    intent.putExtra("additionalInfo",additionalInfo)
-                    startActivity(intent)
-                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
-                    finish()
+
+                    if (fromWhichActivity == Constans.FROM_FILTER){
+                        //additionalInfo?.brandName = data.name
+                        //searchModel?.brandId = data.id
+                        //Filter.filterActivity.finish()
+                        //val intent = Intent(this@SearchBrands,Filter::class.java)
+                        //startActivity(intent)
+                        //intent.putExtra("searchModel",searchModel)
+                        //intent.putExtra("additionalInfo",additionalInfo)
+
+                        setSharedPreferences(data.id)
+                        finish()
+                        overridePendingTransition(R.anim.activity_left_to_right, R.anim.activity_right_to_left)
+                    }else{
+                        receivedProduct?.brandId = data.id
+                        additionalInfo?.brandName = data.name
+                        AddProduct.addProductActivity.finish()
+                        val intent = Intent(this@SearchBrands,AddProduct::class.java)
+                        intent.putExtra("product",receivedProduct)
+                        intent.putExtra("additionalInfo",additionalInfo)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right)
+                        finish()
+                    }
+
                 }
                 binding.rvBrands.layoutManager = GridLayoutManager(this,3)
                 binding.rvBrands.adapter = brandsAdapter
+            }else{
+                println(success.toString())
             }
         })
     }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/product_status"
+        android:title="Kullanım Durumu"
+        />
+    <item
+        android:id="@+id/product_new"
+        android:title="Sıfır Ürün"
+        />
+    <item
+        android:id="@+id/product_used"
+        android:title="Kullanılmış Ürün"
+        />
+</menu>

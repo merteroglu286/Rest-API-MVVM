@@ -41,4 +41,16 @@
     <string name="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</string>
     <string name="crop_image_save_ok">Kaydet</string>
     <string name="txt_gazla_1">Gazlamak için <u>10 Tomopuan</u> satın almalısın.</string>
+    <string name="txt_filtrele">Filtrele</string>
+    <string name="txt_sirala">Sırala</string>
+    <string name="txt_cancel">Vazgeç</string>
+    <string name="checkbox_text">Tomofilya ürün ve hizmetleri ile ilgili ticari elektronik ileti (e-posta ve sms) almak istiyorum.</string>
+    <string name="lutfen_bilgilerinizi_giriniz">Lütfen bilgilerinizi giriniz.</string>
+    <string name="message_successful">Giriş Başarılı</string>
+    <string name="email">email</string>
+    <string name="ad_soyad">Ad - Soyad</string>
+    <string name="verilen_sure_icerisinde_kodu_giremedin">Verilen süre içerisinde kodu giremedin.</string>
+    <string name="uzgunuz">Üzgünüz!</string>
+    <string name="tekrar_dene">Tekrar Dene</string>
+
 </resources>

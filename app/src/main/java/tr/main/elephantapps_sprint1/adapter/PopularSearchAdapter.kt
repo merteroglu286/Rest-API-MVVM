@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import tr.main.elephantapps_sprint1.R
+import tr.main.elephantapps_sprint1.databinding.CategoryAndBrandItemLayoutForSearchResultBinding
 import tr.main.elephantapps_sprint1.databinding.CategoryItemLayoutBinding
 import tr.main.elephantapps_sprint1.databinding.PopulerSearchLayoutBinding
 import tr.main.elephantapps_sprint1.model.response.Home.PopularSearch
@@ -14,7 +15,7 @@ class PopularSearchAdapter(private val searches: ArrayList<PopularSearch>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            PopulerSearchLayoutBinding.inflate(
+            CategoryAndBrandItemLayoutForSearchResultBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
@@ -25,7 +26,7 @@ class PopularSearchAdapter(private val searches: ArrayList<PopularSearch>
         val context = holder.itemView.context
         val search = searches[position]
 
-        holder.tvTitle.text = search.title
+        holder.tvName.text = search.title
 
 
 
@@ -36,7 +37,7 @@ class PopularSearchAdapter(private val searches: ArrayList<PopularSearch>
     }
 
 
-    class ViewHolder(binding: PopulerSearchLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
-        val tvTitle = binding.txtTitle
+    class ViewHolder(binding: CategoryAndBrandItemLayoutForSearchResultBinding) : RecyclerView.ViewHolder(binding.root) {
+        val tvName = binding.txtName
     }
 }

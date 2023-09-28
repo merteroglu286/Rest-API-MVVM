@@ -5,13 +5,13 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-
     <uses-feature android:name="android.hardware.camera.any" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -22,26 +22,40 @@
         android:theme="@style/Theme.Elephantapps_Sprint1"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".activities.CommentsScreen"
+            android:exported="false" />
+        <activity
+            android:name=".activities.GarageProfile"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ProductDetail"
+            android:exported="false" />
+        <activity
+            android:name=".activities.Filter"
+            android:exported="false" />
+        <activity
+            android:name=".activities.FilterProduct"
+            android:exported="false" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
+            android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".activities.AddProduct"
             android:exported="false"
-            android:theme="@style/Theme.Elephantapps_Sprint1"/>
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
             android:name=".activities.IlaniGazla"
             android:exported="false"
-            android:theme="@style/Theme.Elephantapps_Sprint1"/>
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
             android:name=".activities.Price"
             android:exported="false"
-            android:theme="@style/Theme.Elephantapps_Sprint1"/>
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
             android:name=".activities.CargoSize"
             android:exported="false"
-            android:theme="@style/Theme.Elephantapps_Sprint1"/>
+            android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
             android:name=".activities.SearchSubCategoryX"
             android:exported="false"
@@ -94,7 +108,8 @@
             android:theme="@style/Theme.Elephantapps_Sprint1" />
         <activity
             android:name=".activities.Dashboard"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".activities.Splash"
             android:exported="true">

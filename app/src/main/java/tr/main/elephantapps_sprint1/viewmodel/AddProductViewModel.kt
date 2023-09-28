@@ -14,9 +14,13 @@ class AddProductViewModel : ViewModel() {
 
     fun getDataFromAPI(productAddModel: ProductAddModel,activity: Activity) {
         AppRepo.callApiProduct(activity,productAddModel){data,success, message ->
-            dataLiveData.value = data
             successLiveData.value = success
-            errorLiveData.value = message
+
+            if (!success){
+                errorLiveData.value = message
+            }else{
+                dataLiveData.value = data
+            }
         }
     }
 }

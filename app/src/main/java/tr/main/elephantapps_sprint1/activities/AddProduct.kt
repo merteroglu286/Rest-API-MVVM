@@ -16,6 +16,7 @@ import tr.main.elephantapps_sprint1.Constants.Constans
 import tr.main.elephantapps_sprint1.R
 import tr.main.elephantapps_sprint1.databinding.ActivityAddProductBinding
 import tr.main.elephantapps_sprint1.enums.EmailSender
+import tr.main.elephantapps_sprint1.enums.ToastType
 import tr.main.elephantapps_sprint1.model.request.AddProduct.AdditionalInfoModel
 import tr.main.elephantapps_sprint1.model.request.AddProduct.ProductAddModel
 import tr.main.elephantapps_sprint1.model.request.UserModel
@@ -116,6 +117,7 @@ class AddProduct : BaseActivity() {
 
             setValues(binding)
             val intent = Intent(this@AddProduct,SearchCategory::class.java)
+            intent.putExtra(Constans.FROM_WHICH_ACTIVITY,Constans.FROM_ADD_PRODUCT)
             intent.putExtra("product", product)
             intent.putExtra("additionalInfo",additionalInfo)
             startActivity(intent)
@@ -125,6 +127,7 @@ class AddProduct : BaseActivity() {
         binding.llBrand.setOnClickListener {
             setValues(binding)
             val intent = Intent(this@AddProduct,SearchBrands::class.java)
+            intent.putExtra(Constans.FROM_WHICH_ACTIVITY,Constans.FROM_ADD_PRODUCT)
             intent.putExtra("product", product)
             intent.putExtra("additionalInfo",additionalInfo)
             startActivity(intent)
@@ -229,8 +232,6 @@ class AddProduct : BaseActivity() {
             binding.tvPrice.text = Constans.TURKISH_LIRA_SYMBOL+price.toString()
         }
 
-       //
-       // println("getProduct() çalisti: $additionalInfo")
     }
 
     fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
@@ -324,25 +325,26 @@ class AddProduct : BaseActivity() {
 
         viewModel.getDataFromAPI(product!!,this@AddProduct)
 
-        viewModel.successLiveData.observe(this, Observer { success ->
-            if (success == true) {
-                viewModel.dataLiveData.observe(this, Observer { data ->
-                    if (data != 0) {
-                        val intent = Intent(this@AddProduct,AddPhoto::class.java)
-                        intent.putExtra("data",data)
-                        startActivity(intent)
-                        overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
-                    }
-                })
+        viewModel.dataLiveData.observe(this) { data ->
+            if (data != 0) {
+                val intent = Intent(this@AddProduct, AddPhoto::class.java)
+                intent.putExtra("data", data)
+                startActivity(intent)
+                overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
             }
-        })
+        }
 
-        viewModel.errorLiveData.observe(this,Observer{message->
-            if (message != ""){
-                Toast.makeText(this@AddProduct,message,Toast.LENGTH_LONG).show()
+        viewModel.errorLiveData.observe(this) { message ->
+            if (message != "") {
+                Utils.showToast(
+                    this@AddProduct,
+                    message,
+                    Toast.LENGTH_SHORT,
+                    ToastType.Red
+                )
             }
 
-        })
+        }
     }
 
 }

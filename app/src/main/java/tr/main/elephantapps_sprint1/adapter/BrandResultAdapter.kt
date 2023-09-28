@@ -6,6 +6,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import tr.main.elephantapps_sprint1.databinding.CategoryAndBrandItemLayoutForSearchResultBinding
+import tr.main.elephantapps_sprint1.model.response.Brand.Data
 import tr.main.elephantapps_sprint1.model.response.Search.Brand
 import java.util.Locale
 
@@ -43,38 +44,32 @@ class BrandResultAdapter(private val brands: ArrayList<Brand>
         val tvName = binding.txtName
         val tvTitle = binding.txtTitle
     }
-/*
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val searchContent = constraint.toString()
-                if (searchContent.isEmpty())
-                    allBrands = brands
-                else {
-
-                    val filterContact = ArrayList<Brand>()
-                    for (brand in brands) {
-
-                        if (brand.name.toLowerCase(Locale.ROOT).trim()
-                                .contains(searchContent.toLowerCase(Locale.ROOT).trim())
-                        )
-                            filterContact.add(brand)
+    /*
+        override fun getFilter(): Filter {
+            return object : Filter() {
+                override fun performFiltering(constraint: CharSequence?): FilterResults {
+                    val searchContent = constraint.toString()
+                    if (searchContent.isEmpty())
+                        allBrands = brands
+                    else {
+                        val filterContact = ArrayList<Brand>()
+                        for (brand in brands) {
+                            if (brand.name.toLowerCase(Locale.ROOT).trim()
+                                    .contains(searchContent.toLowerCase(Locale.ROOT).trim())
+                            )
+                                filterContact.add(brand)
+                        }
+                        allBrands = filterContact
                     }
-                    allBrands = filterContact
+                    val filterResults = FilterResults()
+                    filterResults.values = allBrands
+                    return filterResults
                 }
-
-                val filterResults = FilterResults()
-                filterResults.values = allBrands
-                return filterResults
-            }
-
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                allBrands = results?.values as ArrayList<Brand>
-                notifyDataSetChanged()
-
+                override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                    allBrands = results?.values as ArrayList<Brand>
+                    notifyDataSetChanged()
+                }
             }
         }
-    }
-
- */
+     */
 }
